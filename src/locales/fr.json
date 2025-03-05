@@ -1,0 +1,70 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "skills": "Compétences",
+    "projects": "Projets",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Bonjour, je suis",
+    "title": "Étudiant en Génie Logiciel",
+    "description": "Passionné par la création de solutions innovantes et l'apprentissage de nouvelles technologies",
+    "cta": "Me contacter",
+    "exp": "4+ ans d'expérience",
+    "field_exp": "en Développement Web"
+  },
+  "about": {
+    "title": "À Propos de Moi",
+    "description": "Je suis Zakaria Oumghar, un étudiant en génie logiciel dévoué avec une passion pour la création d'applications impactantes. J'aime relever des défis complexes et transformer des idées en réalité grâce au code. Mon parcours dans la technologie m'a doté d'un ensemble de compétences diverses et d'un état d'esprit de croissance qui me pousse à apprendre et à m'améliorer continuellement.",
+    "education": "Éducation",
+    "university": "Génie Logiciel",
+    "period": "2022 - Présent",
+    "interests": "Centres d'intérêt",
+
+   "educationList": [
+  {
+    "degree": "Ingénierie Logicielle",
+    "university": "ENSIAS, Université Mohammed V",
+    "period": "2023 - Présent"
+  },
+  {
+    "degree": "Classes Préparatoires - TSI",
+    "university": "CPGE SETTAT",
+    "period": "2021 - 2023"
+  },
+  {
+    "degree": "Baccalauréat en Sciences Techniques",
+    "university": "Lycée Technique Imam Malik, Berrechid",
+    "period": "2018 - 2021"
+  }
+],
+    "interestsList": ["Développement Web", "Applications Mobiles", "IA & Machine Learning", "Open Source"]
+  },
+  "skills": {
+    "title": "Mes Compétences",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "tools": "Outils & Autres"
+  },
+  "projects": {
+    "title": "Mes Projets",
+    "viewAll": "Voir Tous les Projets",
+    "viewProject": "Voir le Projet",
+    "sourceCode": "Code Source"
+  },
+  "contact": {
+    "title": "Contactez-Moi",
+    "description": "N'hésitez pas à me contacter si vous recherchez un développeur, avez une question ou souhaitez simplement établir une connexion.",
+    "nameLabel": "Votre Nom",
+    "emailLabel": "Votre Email",
+    "messageLabel": "Votre Message",
+    "send": "Envoyer le Message",
+    "success": "Message envoyé avec succès!",
+    "error": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "footer": {
+    "rights": "Tous droits réservés",
+    "madeWith": "Fait avec ❤️ par Zakaria Oumghar"
+  }
+}
