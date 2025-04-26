@@ -2,12 +2,15 @@ import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiMail, FiMapPin, FiPhone, FiSend, FiCheck, FiX } from 'react-icons/fi';
+import emailjs from '@emailjs/browser';
 
 const ContactSection = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
+  const formRef = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
   const [formStatus, setFormStatus] = useState(null); // null, 'success', 'error'
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -39,16 +42,28 @@ const ContactSection = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate form submission
-    setTimeout(() => {
+    setIsSubmitting(true);
+    setFormStatus(null);
+
+    try {
+      await emailjs.sendForm(
+        'service_x6g1c27', // Replace with your EmailJS service ID
+        'template_y4vaxrf', // Replace with your EmailJS template ID
+        formRef.current,
+        'UAr9FrxM_siIucO4v' // Replace with your EmailJS public key
+      );
       setFormStatus('success');
-      // Reset form after success
       setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      setFormStatus('error');
+    } finally {
+      setIsSubmitting(false);
       // Reset status after 3 seconds
       setTimeout(() => setFormStatus(null), 3000);
-    }, 1000);
+    }
   };
 
   const contactInfo = [
@@ -94,7 +109,7 @@ const ContactSection = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             <motion.div variants={itemVariants} className="md:col-span-2">
-              <form onSubmit={handleSubmit} className="card">
+              <form ref={formRef} onSubmit={handleSubmit} className="card">
                 <div className="mb-6">
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     {t('contact.nameLabel')}
@@ -146,9 +161,11 @@ const ContactSection = () => {
                     className="btn-primary inline-flex items-center gap-2 hover-trigger"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    disabled={formStatus === 'success'}
+                    disabled={isSubmitting || formStatus === 'success'}
                   >
-                    {formStatus === 'success' ? (
+                    {isSubmitting ? (
+                      <>{t('contact.sending')}...</>
+                    ) : formStatus === 'success' ? (
                       <>
                         <FiCheck /> {t('contact.success')}
                       </>
