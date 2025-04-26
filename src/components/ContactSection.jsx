@@ -205,15 +205,17 @@ const ContactSection = () => {
               <div className="card mt-6">
                 <h3 className="text-lg font-semibold mb-4">Social Media</h3>
                 <div className="flex gap-4">
-                  {['github', 'linkedin', 'twitter', 'instagram'].map((social, index) => (
+                  {[{name: 'github', link: "https://github.com/zackweb-pro"},
+                  {name: 'linkedin', link: "https://www.instagram.com/zakaria.oumghar/"},
+                  {name: 'instagram', link: "https://www.linkedin.com/in/zakaria-oumghar-b30b9b1bb/"}].map((social, index) => (
                     <motion.a
                       key={index}
-                      href="#"
+                      href={social.link}
                       className="w-10 h-10 rounded-full bg-gray-100 dark:bg-dark-300 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-primary-500 hover:text-white transition-colors duration-300 hover-trigger"
                       whileHover={{ scale: 1.1, rotate: 10 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <i className={`fi fi-brands-${social}`}></i>
+                      <i className={`fi fi-brands-${social.name}`}></i>
                     </motion.a>
                   ))}
                 </div>

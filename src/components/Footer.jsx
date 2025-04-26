@@ -15,7 +15,7 @@ const Footer = () => {
               <span className="gradient-text">ZACKWEB</span>
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mt-2">
-              {t('footer.madeWith')} <FiHeart className="inline text-red-500" />
+              {t('footer.madeWith')} 
             </p>
           </div>
 

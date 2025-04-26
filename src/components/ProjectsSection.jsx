@@ -38,7 +38,7 @@ const projects = [
     description: 'A web application for managing employee records and purchase requests, with admin and responsable roles, built during internship.',
     image: somap_image,
     tags: ['React.js', 'Tailwind CSS', 'Framer Motion', 'MySQL', 'Node.js', 'Express'],
-    github: '#',
+    github: 'https://github.com/zackweb-pro/my-internship-project-1A',
     demo: '#',
   },
   {
@@ -46,7 +46,7 @@ const projects = [
     description: 'A platform connecting students with recruiters for internship applications, using Oracle DB on OCI, React, and Node.js.',
     image: searchstage,
     tags: ['React.js', 'Node.js', 'Oracle DB', 'OCI', 'Express'],
-    github: '#',
+    github: 'https://github.com/zackweb-pro/SI_Interface',
     demo: '#',
   },
   {
@@ -54,7 +54,7 @@ const projects = [
     description: 'A chatbot web application for ENSIAS information retrieval, built with Python, Flask, NeuralIntents, and frontend technologies.',
     image: chatbot_ensias,
     tags: ['Python', 'Flask', 'NeuralIntents', 'HTML', 'CSS', 'JavaScript'],
-    github: '#',
+    github: 'https://github.com/zackweb-pro/PFA-FULL-EDITION',
     demo: '#',
   },
   {
@@ -62,7 +62,7 @@ const projects = [
     description: 'A Chrome extension that stores user inputs so they persist even after a page reload.',
     image: formsaver_pro,
     tags: ['JavaScript', 'Chrome Extension', 'Local Storage', 'HTML', 'CSS'],
-    github: '#',
+    github: 'https://github.com/zackweb-pro/No-ReFill',
     demo: '#',
   },
 ];
@@ -106,14 +106,14 @@ const projects = [
                       >
                         <FiGithub />
                       </motion.a>
-                      <motion.a
+                      {/* <motion.a
                         href={project.demo}
                         className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/40 transition-colors duration-300"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
                         <FiExternalLink />
-                      </motion.a>
+                      </motion.a> */}
                     </div>
                   </div>
                 </div>
@@ -133,13 +133,13 @@ const projects = [
                 </div>
 
                 <div className="flex justify-between">
-                  <motion.a
+                  {/* <motion.a
                     href={project.demo}
                     className="text-primary-500 font-medium text-sm hover:text-primary-600 transition-colors duration-300 flex items-center gap-1"
                     whileHover={{ x: 5 }}
                   >
                     {t('projects.viewProject')} <FiExternalLink />
-                  </motion.a>
+                  </motion.a> */}
                   <motion.a
                     href={project.github}
                     className="text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-300 flex items-center gap-1"
@@ -156,14 +156,14 @@ const projects = [
             variants={itemVariants}
             className="mt-12 text-center"
           >
-            <motion.a
+            {/* <motion.a
               href="#"
               className="btn-primary inline-flex items-center gap-2 hover-trigger"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               {t('projects.viewAll')} <FiExternalLink />
-            </motion.a>
+            </motion.a> */}
           </motion.div>
         </motion.div>
       </div>
