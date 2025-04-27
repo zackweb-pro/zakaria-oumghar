@@ -82,14 +82,16 @@ const HeroSection = () => {
             {t('hero.description')}
           </motion.p>
           <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
-            <motion.a
-              href="#contact"
-              className="btn-primary hover-trigger"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {t('hero.cta')}
-            </motion.a>
+          <motion.a
+            href={t('hero.cv')}
+            className="btn-primary hover-trigger"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            download
+          >
+            {t('hero.cta')}
+          </motion.a>
+
             <motion.a
               href="#projects"
               className="btn-outline hover-trigger"

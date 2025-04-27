@@ -10,7 +10,8 @@
     "greeting": "Bonjour, je suis",
     "title": "Étudiant en Génie Logiciel",
     "description": "Passionné par la création de solutions innovantes et l'apprentissage de nouvelles technologies",
-    "cta": "Me contacter",
+    "cta": "Télécharger Mon CV",
+    "cv": "/zakaria-oumghar/assets/FR_CV_ZAKARIA_OUMGHAR_PROFESSIONAL (1).pdf",
     "exp": "4+ ans d'expérience",
     "field_exp": "en Développement Web"
   },
@@ -48,7 +49,7 @@
     "tools": "Outils & Autres"
   },
   "projects": {
-    "title": "Mes Projets",
+    "title": "Mes Projets & Experiences",
     "viewAll": "Voir Tous les Projets",
     "viewProject": "Voir le Projet",
     "sourceCode": "Code Source"

@@ -10,7 +10,8 @@
     "greeting": "Hello, I'm",
     "title": "Software Engineering Student",
     "description": "Passionate about creating innovative solutions and learning new technologies",
-    "cta": "Get in touch",
+    "cta": "Download My Resume",
+    "cv": "/zakaria-oumghar/assets/ENG_RESUME_ZAKARIA_OUMGHAR_PROFESSIONAL.pdf",
     "exp": "4+ Years of experience",
     "field_exp": "in Web Development"
   },
@@ -47,7 +48,7 @@
     "tools": "Tools & Others"
   },
   "projects": {
-    "title": "My Projects",
+    "title": "My Projects & Experiences",
     "viewAll": "View All Projects",
     "viewProject": "View Project",
     "sourceCode": "Source Code"
