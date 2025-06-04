@@ -1,14 +1,23 @@
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FiCode, FiAward } from 'react-icons/fi';
-import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
-import 'react-vertical-timeline-component/style.min.css';
+import { FiCode, FiAward, FiCalendar, FiMapPin } from 'react-icons/fi';
 
 const AboutSection = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
+  const sectionRef = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
+  const imageRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  // Parallax effect values
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 3]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -27,12 +36,36 @@ const AboutSection = () => {
     },
   };
 
+  const floatingVariants = {
+    initial: { y: 0 },
+    animate: {
+      y: [-5, 5, -5],
+      transition: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+    }
+  };
+
+  const hoverScale = {
+    hover: { scale: 1.03, transition: { duration: 0.3 } }
+  };
+
   const education = Array.isArray(t('about.educationList', { returnObjects: true })) ? t('about.educationList', { returnObjects: true }) : [];
   const interests = Array.isArray(t('about.interestsList', { returnObjects: true })) ? t('about.interestsList', { returnObjects: true }) : [];
 
   return (
-    <section id="about" className="section-padding bg-gray-50 dark:bg-dark-200">
-      <div className="container mx-auto px-4">
+    <section 
+      id="about" 
+      ref={sectionRef} 
+      className="section-padding bg-gray-50 dark:bg-dark-200 relative overflow-hidden"
+    >
+      {/* Background decorative elements */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-primary-100 dark:bg-primary-900/20 rounded-full blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-20 right-0 w-96 h-96 bg-primary-100 dark:bg-primary-900/20 rounded-full blur-3xl opacity-30 translate-x-1/3"></div>
+      
+      {/* Decorative orbiting circles */}
+      <div className="hidden lg:block absolute left-10 top-1/3 w-8 h-8 rounded-full bg-primary-500/10 dark:bg-primary-400/10" style={{ animation: 'orbit 15s infinite linear' }}></div>
+      <div className="hidden lg:block absolute right-10 top-1/4 w-4 h-4 rounded-full bg-primary-500/10 dark:bg-primary-400/10" style={{ animation: 'orbit 12s infinite linear reverse' }}></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           ref={ref}
           variants={containerVariants}
@@ -40,76 +73,240 @@ const AboutSection = () => {
           animate={isInView ? "visible" : "hidden"}
           className="max-w-4xl mx-auto"
         >
-          <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-display font-bold text-center mb-12">
+          {/* Title section - unchanged */}
+          <motion.h2 
+            variants={itemVariants} 
+            className="text-3xl md:text-4xl font-display font-bold text-center mb-12 relative"
+          >
             {t('about.title')}
+            <motion.div 
+              className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 h-1 bg-primary-500 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: '60px' }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+            />
           </motion.h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-10">
             <motion.div variants={itemVariants} className="md:col-span-2">
-              <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6">
+              <motion.p 
+                className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed relative z-10"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+              >
                 {t('about.description')}
-              </p>
+              </motion.p>
 
-              {/* Education Timeline */}
-              <div className="mt-8">
-                <h3 className="text-xl font-semibold mb-4">{t('about.education')}</h3>
-                <VerticalTimeline>
+              {/* New Modern Education Timeline */}
+              <div className="mt-12 relative">
+                <h3 className="text-xl font-semibold mb-10 flex items-center">
+                  <span className="mr-2">{t('about.education')}</span>
+                  <motion.div 
+                    className="h-px bg-gradient-to-r from-primary-500 via-primary-300 to-transparent flex-grow ml-3" 
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: "100%", opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </h3>
+                
+                {/* Timeline connector */}
+                <motion.div 
+                  className="absolute left-0 top-10 bottom-20 w-[2px] bg-gradient-to-b from-primary-500 via-primary-300 to-transparent"
+                  initial={{ height: 0, opacity: 0 }}
+                  whileInView={{ height: "100%", opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.5 }}
+                />
+                
+                {/* Education cards */}
+                <div className="space-y-16 ml-6 relative">
                   {education.map((edu, index) => (
-                    <VerticalTimelineElement
+                    <motion.div
                       key={index}
-                      className="vertical-timeline-element--work"
-                      contentStyle={{ background: 'var(--content-bg)', color: 'var(--text-color)', borderRadius: '8px', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}
-                      contentArrowStyle={{ borderRight: '7px solid var(--content-bg)' }}
-                      date={edu.period}
-                      iconStyle={{ background: '#7dd3fc', color: '#fff', width: '30px', height: '30px', marginLeft: '-15px' }}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.7, delay: index * 0.2 }}
+                      className="relative"
                     >
-                      <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-100">{edu.degree}</h3>
-                      <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6">{edu.university}</p>
-                    </VerticalTimelineElement>
-                  ))}
-                </VerticalTimeline>
-              </div>
+                      {/* Timeline node - consistent for all cards */}
+                      <motion.div 
+                        className="absolute -left-10 w-3.5 h-3.5 rounded-full bg-primary-500 border-4 border-white dark:border-dark-200 shadow-md"
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        viewport={{ once: true }}
+                        whileHover={{ scale: 1.5, backgroundColor: "#0284c7" }}
+                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                      />
+                      
+                      {/* Glow effect for the node - consistent for all */}
+                      <div className="absolute -left-10 w-3.5 h-3.5 rounded-full bg-primary-400 opacity-40 blur-sm" />
 
-              {/* Interests */}
-              <div className="mt-8">
-                <h3 className="text-xl font-semibold mb-4">{t('about.interests')}</h3>
-                <div className="flex flex-wrap gap-3">
-                  {interests.map((interest, index) => (
-                    <div key={index} className="px-4 py-2 bg-primary-600 text-white rounded-full text-sm shadow-md">
-                      {interest}
-                    </div>
+                      {/* Education card - identical styling for all */}
+                      <motion.div 
+                        className="relative bg-white dark:bg-dark-100 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700/30"
+                        whileHover={{ 
+                          y: -5, 
+                          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
+                          borderColor: "rgba(125, 211, 252, 0.5)"
+                        }}
+                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                      >
+                        {/* Glassmorphism card accent - identical for all cards */}
+                        <div className="absolute top-0 right-0 h-20 w-20 bg-primary-500/5 dark:bg-primary-500/10 rounded-bl-full rounded-tr-xl" />
+                        
+                        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 relative z-10">
+                          {edu.degree}
+                        </h3>
+                        
+                        <div className="mt-2 flex items-center text-primary-600 dark:text-primary-400 text-sm relative z-10">
+                          <FiMapPin className="mr-2" />
+                          <p>{edu.university}</p>
+                        </div>
+                        
+                        <div className="mt-1 flex items-center text-gray-500 dark:text-gray-400 text-sm relative z-10">
+                          <FiCalendar className="mr-2" />
+                          <p>{edu.period}</p>
+                        </div>
+                        
+                        {/* Animated underline on hover - identical for all */}
+                        <motion.div 
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-300"
+                          initial={{ width: "0%", left: "50%" }}
+                          whileHover={{ width: "100%", left: "0%" }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      </motion.div>
+                    </motion.div>
                   ))}
                 </div>
               </div>
+
+              {/* Interests section - unchanged */}
+              <div className="mt-16">
+                <h3 className="text-xl font-semibold mb-6 flex items-center">
+                  <span className="mr-2">{t('about.interests')}</span>
+                  <motion.div 
+                    className="h-px bg-gradient-to-r from-primary-500 via-primary-300 to-transparent flex-grow ml-3" 
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: "100%", opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </h3>
+                <motion.div 
+                  className="flex flex-wrap gap-3"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: { 
+                      opacity: 1,
+                      transition: { staggerChildren: 0.1 }
+                    }
+                  }}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
+                  {interests.map((interest, index) => (
+                    <motion.div 
+                      key={index} 
+                      className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-full text-sm shadow-md backdrop-blur-sm relative overflow-hidden group"
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                      }}
+                      whileHover={{ 
+                        scale: 1.05, 
+                        boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.3)'
+                      }}
+                    >
+                      <span className="relative z-10">{interest}</span>
+                      <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-full" />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
             </motion.div>
 
-            {/* Image Section */}
-            <motion.div variants={itemVariants} className="relative">
+            {/* Image section - unchanged */}
+            <motion.div 
+              variants={itemVariants} 
+              className="relative"
+              style={{ perspective: "1000px" }}
+            >
               <div className="sticky top-24">
-                <div className="relative h-80 rounded-xl overflow-hidden shadow-lg">
+                <motion.div 
+                  ref={imageRef}
+                  style={{ y, rotateY: rotate, scale }}
+                  className="relative h-80 rounded-xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:rotate-y-3 hover:scale-[1.02]"
+                >
+                  {/* Card frame with glassmorphism effect */}
+                  <div className="absolute inset-0 border border-white/10 rounded-xl z-20 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary-600/20 to-transparent rounded-xl z-10 mix-blend-overlay" />
+                  
                   <img
                     src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80"
                     alt="Coding"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
-                    <div className="text-white">
-                      <div className="flex items-center gap-2 mb-2">
-                        <FiCode className="text-primary-400" />
+                  
+                  <motion.div 
+
+                    className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6"
+                  >
+                    <div className="text-white relative z-20">
+                      <motion.div 
+                        className="flex items-center gap-2 mb-4"
+                        whileHover={{ x: 5 }}
+                      >
+                        <div className="w-8 h-8 rounded-full bg-primary-500/30 backdrop-blur-sm flex items-center justify-center">
+                          <FiCode className="text-primary-300" />
+                        </div>
                         <span className="font-medium">Software Engineering</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FiAward className="text-primary-400" />
+                      </motion.div>
+                      
+                      <motion.div 
+                        className="flex items-center gap-2"
+                        whileHover={{ x: 5 }}
+                      >
+                        <div className="w-8 h-8 rounded-full bg-primary-500/30 backdrop-blur-sm flex items-center justify-center">
+                          <FiAward className="text-primary-300" />
+                        </div>
                         <span>Problem Solver</span>
-                      </div>
+                      </motion.div>
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                  
+                  {/* Highlight effect on hover */}
+                  <div className="absolute inset-0 opacity-0 hover:opacity-100 bg-gradient-to-tr from-primary-500/10 to-transparent transition-opacity duration-500 pointer-events-none" />
+                </motion.div>
+                
+                {/* 3D floating ornamental element */}
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="absolute -bottom-6 -right-6 w-20 h-20 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 shadow-lg rotate-12 z-10"
+                  style={{ 
+                    transformStyle: "preserve-3d", 
+                    transform: "rotateX(10deg) rotateY(10deg)" 
+                  }}
+                >
+                  <div className="absolute inset-1 rounded-lg bg-white/10 backdrop-blur-sm" />
+                </motion.div>
               </div>
             </motion.div>
           </div>
         </motion.div>
       </div>
+
+      {/* CSS for orbit animation */}
+      <style jsx global>{`
+        @keyframes orbit {
+          0% { transform: translateY(0) rotate(0deg) translateX(20px) rotate(0deg); }
+          100% { transform: translateY(0) rotate(360deg) translateX(20px) rotate(-360deg); }
+        }
+      `}</style>
     </section>
   );
 };
