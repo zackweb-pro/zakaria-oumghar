@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
 import LanguageSwitcher from './LanguageSwitcher';
+import VisitorCounter from './VisitorCounter';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -112,6 +113,7 @@ const Navbar = () => {
           ))}
           
           <motion.div variants={itemVariants} className="flex items-center space-x-4">
+            <VisitorCounter />
             <LanguageSwitcher />
             
             <motion.button

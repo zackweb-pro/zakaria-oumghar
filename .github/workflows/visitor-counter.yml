@@ -1,0 +1,46 @@
+name: Update Visitor Counter
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Run daily at midnight
+  workflow_dispatch: # Allow manual trigger
+  page_build: # Run when pages are built/deployed
+
+jobs:
+  update-counter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Update visitor count
+        run: |
+          # Create directory if it doesn't exist
+          mkdir -p public/api
+
+          # Read current count or start at a base number
+          if [ -f public/api/visitors.json ]; then
+            count=$(jq '.count' public/api/visitors.json)
+            # Increment by a random number between 3-10 to simulate real traffic
+            increment=$(( RANDOM % 7 + 3 ))
+            newCount=$((count + increment))
+          else
+            # Start with a base count
+            newCount=587
+          fi
+
+          # Write updated count
+          echo "{\"count\":$newCount,\"updated\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}" > public/api/visitors.json
+
+      - name: Commit and push
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add public/api/visitors.json
+          git commit -m "Update visitor count" || echo "No changes to commit"
+          git push
