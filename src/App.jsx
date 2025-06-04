@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import 'locomotive-scroll/dist/locomotive-scroll.css';
 
 // Components
-import CustomCursor from './components/CustomCursor';
+// import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
@@ -53,7 +53,7 @@ function App() {
 
   return (
     <div className="App">
-      <CustomCursor />
+      {/* <CustomCursor /> */}
       <Navbar />
 
       <motion.div
