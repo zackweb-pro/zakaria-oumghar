@@ -64,7 +64,71 @@ const AboutSection = () => {
       {/* Decorative orbiting circles */}
       <div className="hidden lg:block absolute left-10 top-1/3 w-8 h-8 rounded-full bg-primary-500/10 dark:bg-primary-400/10" style={{ animation: 'orbit 15s infinite linear' }}></div>
       <div className="hidden lg:block absolute right-10 top-1/4 w-4 h-4 rounded-full bg-primary-500/10 dark:bg-primary-400/10" style={{ animation: 'orbit 12s infinite linear reverse' }}></div>
-      
+
+      {/* Animated background particles like in Hero Section */}
+      <div className="absolute inset-0 opacity-25 dark:opacity-30 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: Math.random() * 6 + 1,
+              height: Math.random() * 6 + 1,
+              filter: "blur(0.5px)",
+              boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
+            }}
+            animate={{
+              x: [0, Math.random() * 100 - 50],
+              y: [0, Math.random() * 100 - 50],
+              opacity: [0.2, 0.7, 0.2],
+            }}
+            transition={{
+              duration: Math.random() * 20 + 10,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Mesh gradient background like in Hero Section */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.4) 0%, transparent 30%),
+            radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 30%),
+            radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.3) 0%, transparent 40%)
+          `,
+          opacity: 0.15,
+          backgroundSize: '200% 200%',
+        }}
+      />
+
+      {/* Grid pattern like in Hero Section */}
+      <div className="absolute inset-0" 
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(99, 102, 241, 0.07) 1px, transparent 1px), 
+            linear-gradient(to bottom, rgba(99, 102, 241, 0.07) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px',
+          opacity: 0.5
+        }}
+      />
+
+      {/* Subtle texture overlay */}
+      <div 
+        className="absolute inset-0 opacity-5 dark:opacity-10 pointer-events-none mix-blend-overlay" 
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E")`,
+          backgroundSize: '8px 8px'
+        }}
+      />
+
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           ref={ref}
