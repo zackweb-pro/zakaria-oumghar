@@ -119,7 +119,7 @@ const ContactSection = () => {
   ];
 
   const socialLinks = [
-    { name: 'GitHub', icon: <FaGithub />, link: "https://github.com/zackweb-pro", color: 'from-gray-700 to-gray-800 dark:from-gray-100 dark:to-gray-300' },
+    { name: 'GitHub', icon: <FaGithub />, link: "https://github.com/zackweb-pro", color: 'from-gray-700 to-gray-800 dark:from-gray-500 dark:to-gray-300' },
     { name: 'LinkedIn', icon: <FaLinkedinIn />, link: "https://www.linkedin.com/in/zakaria-oumghar-b30b9b1bb/", color: 'from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600' },
     { name: 'Instagram', icon: <FaInstagram />, link: "https://www.instagram.com/zakaria.oumghar/", color: 'from-pink-500 to-purple-600 dark:from-pink-400 dark:to-purple-500' }
   ];
