@@ -340,6 +340,7 @@ const HeroSection = () => {
                   <img
                     src={profile}
                     alt="Zakaria Oumghar"
+                    loading='lazy'
                     className="w-full h-full object-cover object-center"
                     style={{ objectPosition: "center 30%" }} // Adjust this value to center on your face
                   />
