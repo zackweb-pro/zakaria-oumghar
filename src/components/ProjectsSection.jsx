@@ -6,6 +6,7 @@ import somap_image from '../assets/dashboardsomap.png';
 import searchstage from '../assets/searchstage.jpeg';
 import chatbot_ensias from '../assets/chatbot_ensias.png';
 import formsaver_pro from '../assets/FormSaver Pro.png';
+import dep_manage from '../assets/dep_manage.png'; 
 
 const ProjectsSection = () => {
   const { t } = useTranslation();
@@ -35,7 +36,17 @@ const ProjectsSection = () => {
 
   const projects = [
     {
-      title: 'Gestion des Achats et Personnels',
+      title: 'Management of department in ENSIAS',
+      description: 'A web application for managing the departments of ENSIAS and displaying them in a more esthitique astonishing way.',
+      image: dep_manage,
+      tags: ['Spring Boot', 'React.js', "microservices", "docker", "github actions", 'Postgresql', 'Tailwind CSS', 'Framer Motion', 'Node.js', 'Express'],
+      github: 'https://github.com/zackweb-pro/department-management-ensias',
+      demo: '#',
+      color: 'from-red-500/20 to-yellow-400/20',
+      accent: '#ec3636'
+    },
+    {
+      title: 'Management of Employee Records and Purchase Requests',
       description: 'A web application for managing employee records and purchase requests, with admin and responsable roles, built during internship.',
       image: somap_image,
       tags: ['React.js', 'Tailwind CSS', 'Framer Motion', 'MySQL', 'Node.js', 'Express'],
@@ -45,7 +56,7 @@ const ProjectsSection = () => {
       accent: '#0ea5e9'
     },
     {
-      title: 'Etudiant Cherche Stage Platform',
+      title: 'Student Interface for Internship Applications',
       description: 'A platform connecting students with recruiters for internship applications, using Oracle DB on OCI, React, and Node.js.',
       image: searchstage,
       tags: ['React.js', 'Node.js', 'Oracle DB', 'OCI', 'Express'],
@@ -65,7 +76,7 @@ const ProjectsSection = () => {
       accent: '#8b5cf6'
     },
     {
-      title: 'No Refill',
+      title: 'Form Saver Pro',
       description: 'A Chrome extension that stores user inputs so they persist even after a page reload.',
       image: formsaver_pro,
       tags: ['JavaScript', 'Chrome Extension', 'Local Storage', 'HTML', 'CSS'],
@@ -385,6 +396,7 @@ const ProjectsSection = () => {
                   <motion.div className="flex justify-between items-center">
                     <motion.a
                       href={project.github}
+                      target="_blank"
                       className="text-sm text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 font-medium flex items-center gap-1.5 group/link"
                       whileHover={{ x: 3 }}
                     >
