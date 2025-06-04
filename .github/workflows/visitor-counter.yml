@@ -6,6 +6,9 @@ on:
   workflow_dispatch: # Allow manual trigger
   page_build: # Run when pages are built/deployed
 
+permissions:
+  contents: write # This is crucial - explicitly grant write permission
+
 jobs:
   update-counter:
     runs-on: ubuntu-latest
@@ -20,27 +23,22 @@ jobs:
 
       - name: Update visitor count
         run: |
-          # Create directory if it doesn't exist
           mkdir -p public/api
 
-          # Read current count or start at a base number
           if [ -f public/api/visitors.json ]; then
             count=$(jq '.count' public/api/visitors.json)
-            # Increment by a random number between 3-10 to simulate real traffic
             increment=$(( RANDOM % 7 + 3 ))
             newCount=$((count + increment))
           else
-            # Start with a base count
             newCount=587
           fi
 
-          # Write updated count
           echo "{\"count\":$newCount,\"updated\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}" > public/api/visitors.json
 
       - name: Commit and push
         run: |
-          git config --global user.name 'zakaria oumghar'
-          git config --global user.email 'zakariaoumghar1@gmail.com'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add public/api/visitors.json
           git commit -m "Update visitor count" || echo "No changes to commit"
           git push

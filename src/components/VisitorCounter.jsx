@@ -7,54 +7,45 @@ const VisitorCounter = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchVisitorCount = async () => {
+    const updateVisitorCount = () => {
       try {
-        // GitHub Pages URL pattern
-        const baseUrl = window.location.hostname === 'localhost' 
-          ? '' // Local development
-          : 'https://zackweb-pro.github.io/zakaria-oumghar';
+        // Get stored stats or create new
+        const stored = localStorage.getItem('visitor_stats');
+        const defaultStats = {
+          baseCount: 587,
+          lastVisit: new Date().toISOString(),
+          visitDates: [new Date().toDateString()]
+        };
         
-        const response = await fetch(`${baseUrl}/api/visitors.json?v=${Date.now()}`);
-        if (response.ok) {
-          const data = await response.json();
-          setCount(data.count);
-        } else {
-          // Fallback to localStorage if API fails
-          useLocalCounter();
+        let stats = stored ? JSON.parse(stored) : defaultStats;
+        const today = new Date().toDateString();
+        
+        // Check if this is a new unique day
+        if (!stats.visitDates.includes(today)) {
+          stats.visitDates.push(today);
+          // Keep only last 30 days to avoid localStorage bloat
+          if (stats.visitDates.length > 30) {
+            stats.visitDates.shift();
+          }
+          // Increment by 1-3 for each new day visit
+          stats.baseCount += Math.floor(Math.random() * 3) + 1;
         }
+        
+        stats.lastVisit = new Date().toISOString();
+        localStorage.setItem('visitor_stats', JSON.stringify(stats));
+        
+        // Calculate display count: base + unique days
+        setCount(stats.baseCount + stats.visitDates.length);
+        setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching visitor count:', error);
-        useLocalCounter();
-      } finally {
+        console.error('Error with visitor counter:', error);
+        setCount(612);
         setIsLoading(false);
       }
     };
 
-    const useLocalCounter = () => {
-      // Local fallback counter logic
-      const stored = localStorage.getItem('visitor_stats');
-      const defaultStats = {
-        totalCount: 587,
-        lastVisit: new Date().toISOString(),
-        today: new Date().toDateString()
-      };
-      
-      let stats = stored ? JSON.parse(stored) : defaultStats;
-      
-      // Update stats
-      if (stats.today !== new Date().toDateString()) {
-        stats.totalCount += Math.floor(Math.random() * 7) + 3;
-        stats.today = new Date().toDateString();
-      }
-      
-      stats.lastVisit = new Date().toISOString();
-      localStorage.setItem('visitor_stats', JSON.stringify(stats));
-      
-      setCount(stats.totalCount);
-    };
-
-    // Add a slight delay for visual effect
-    setTimeout(fetchVisitorCount, 600);
+    // Add a delay for visual appeal
+    setTimeout(updateVisitorCount, 800);
   }, []);
 
   return (
