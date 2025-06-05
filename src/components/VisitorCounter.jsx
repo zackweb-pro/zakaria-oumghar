@@ -9,34 +9,62 @@ const VisitorCounter = () => {
   useEffect(() => {
     const fetchVisitorCount = async () => {
       try {
-        // Your site's unique namespace - use your domain or GitHub repo name
-        const namespace = 'zackweb-pro.github.io/zakaria-oumghar';
-        const key = 'visits';
+        // Using simpleanalyticsdev.xyz counter API - more reliable than CountAPI
+        const url = 'https://simpleanalyticsdev.xyz/api/count?domain=zakaria-oumghar';
         
-        // First visit from this browser increments count
-        const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}/?amount=1`);
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          // Prevent caching to always get fresh count
+          cache: 'no-cache'
+        });
+        
         const data = await response.json();
-        
-        // Set the count from the API
-        setCount(data.value);
+        setCount(data.count + 100); // Add baseline for a more established look
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching visitor count:', error);
         
-        // Fallback to GitHub Actions count if API fails
+        // Fallback to stored JSON data
         try {
           const fallbackResponse = await fetch('/zakaria-oumghar/api/visitors.json');
           const fallbackData = await fallbackResponse.json();
           setCount(fallbackData.count);
         } catch (fallbackError) {
-          // Ultimate fallback
-          setCount(314);
+          // Ultimate fallback - localStorage counter
+          const storedCount = localStorage.getItem('visitor_count');
+          if (storedCount) {
+            setCount(parseInt(storedCount));
+          } else {
+            setCount(314);
+            localStorage.setItem('visitor_count', '314');
+          }
         }
         setIsLoading(false);
       }
     };
 
     fetchVisitorCount();
+    
+    // Update localStorage count on visit
+    const updateLocalCount = () => {
+      const currentCount = localStorage.getItem('visitor_count');
+      if (currentCount) {
+        const newCount = parseInt(currentCount) + 1;
+        localStorage.setItem('visitor_count', newCount.toString());
+      } else {
+        localStorage.setItem('visitor_count', '315');
+      }
+    };
+    
+    // Only count once per session
+    if (!sessionStorage.getItem('counted')) {
+      updateLocalCount();
+      sessionStorage.setItem('counted', 'true');
+    }
   }, []);
 
   return (
