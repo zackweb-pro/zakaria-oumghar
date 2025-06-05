@@ -59,32 +59,53 @@ const VisitorCounter = () => {
     
     // Handle localhost or fallback counter
     const handleLocalhostCounter = () => {
-      // For localhost/fallback, use a more sophisticated localStorage approach
       try {
-        const storedData = localStorage.getItem('visitor_data');
-        let data = storedData ? JSON.parse(storedData) : {
-          count: 315,
-          visits: [],
-          lastRefresh: null
-        };
+        // First, try to get existing data
+        let data;
+        try {
+          const storedData = localStorage.getItem('visitor_data');
+          if (storedData) {
+            data = JSON.parse(storedData);
+          }
+        } catch (parseError) {
+          console.log('Error parsing stored data:', parseError);
+          // Clear corrupted data
+          localStorage.removeItem('visitor_data');
+        }
+        
+        // Make sure we have a properly structured data object
+        if (!data || typeof data !== 'object' || !Array.isArray(data.visits)) {
+          // Reset with proper structure if data is missing or malformed
+          data = {
+            count: 315,
+            visits: [],
+            lastRefresh: null
+          };
+        }
         
         // Get current date and time for tracking
         const now = new Date();
-        const today = now.toDateString();
         
         // Only count new visits/refreshes if more than 30 seconds have passed
         const lastRefresh = data.lastRefresh ? new Date(data.lastRefresh) : null;
         const isNewVisit = !lastRefresh || (now - lastRefresh > 30000);
         
         if (isNewVisit) {
-          // Add this visit to the list
+          // Add this visit to the list (safely)
+          if (!Array.isArray(data.visits)) {
+            data.visits = [];
+          }
+          
           data.visits.push(now.toISOString());
-          // Keep only most recent 50 visits to avoid localStorage bloat
+          
+          // Keep only most recent 50 visits
           if (data.visits.length > 50) {
             data.visits = data.visits.slice(-50);
           }
+          
           // Increment count
-          data.count += 1;
+          data.count = (typeof data.count === 'number') ? data.count + 1 : 316;
+          
           // Update last refresh time
           data.lastRefresh = now.toISOString();
           
