@@ -9,38 +9,38 @@ const VisitorCounter = () => {
   useEffect(() => {
     const fetchVisitorCount = async () => {
       try {
-        // StatCounter doesn't provide a direct API for visitor count in components
-        // So we'll use a combination of approaches
+        // Calculate a unique page view ID based on timestamp
+        // This ensures we can track refreshes while avoiding counting duplicates in a short time
+        const viewId = Math.floor(Date.now() / 10000); // Changes every 10 seconds
+        const lastViewId = sessionStorage.getItem('last_view_id');
         
-        // First, check if we can get the count from StatCounter
-        const projectId = 13141616;
-        
-        // Try to fetch the count from StatCounter's public stats
-        // NOTE: This isn't a documented API and may not work reliably
-        try {
-          const statUrl = `https://statcounter.com/p${projectId}/summary/`;
-          // This is just to check if we can access public stats - won't actually use result
-          await fetch(statUrl, { mode: 'no-cors' });
-          
-          // Increment the local count to show activity
-          incrementLocalCount();
-        } catch (e) {
-          console.log("StatCounter fetch check failed", e);
-        }
-        
-        // Use localStorage as our primary display source since StatCounter
-        // doesn't provide a direct API to get the count
+        // Get or initialize stored count
         const storedCount = localStorage.getItem('visitor_count');
-        if (storedCount) {
-          setCount(parseInt(storedCount));
-        } else {
-          // Start with a baseline count + today
-          const baseCount = 314;
-          localStorage.setItem('visitor_count', baseCount.toString());
-          setCount(baseCount);
+        let currentCount = storedCount ? parseInt(storedCount) : 314;
+        
+        // Increment count if this is a new view (refresh)
+        if (lastViewId !== viewId.toString()) {
+          currentCount += 1;
+          localStorage.setItem('visitor_count', currentCount.toString());
+          sessionStorage.setItem('last_view_id', viewId.toString());
+          
+          console.log('Counter incremented to:', currentCount);
         }
         
+        setCount(currentCount);
         setIsLoading(false);
+        
+        // Check StatCounter to see if it's loaded
+        const checkScLoaded = setInterval(() => {
+          if (window._statcounter) {
+            console.log('StatCounter detected');
+            clearInterval(checkScLoaded);
+          }
+        }, 1000);
+        
+        // Clear interval after 5 seconds (avoid memory leaks)
+        setTimeout(() => clearInterval(checkScLoaded), 5000);
+        
       } catch (error) {
         console.error('Error with visitor counter:', error);
         
@@ -50,42 +50,18 @@ const VisitorCounter = () => {
           const fallbackData = await fallbackResponse.json();
           setCount(fallbackData.count);
         } catch (fallbackError) {
-          setCount(314);
+          setCount(315); // Ultimate fallback
         }
         
         setIsLoading(false);
       }
     };
-    
-    // Function to increment the local counter
-    const incrementLocalCount = () => {
-      // Only increment once per session
-      if (sessionStorage.getItem('sc_counted') !== 'true') {
-        const currentCount = localStorage.getItem('visitor_count');
-        if (currentCount) {
-          const newCount = parseInt(currentCount) + 1;
-          localStorage.setItem('visitor_count', newCount.toString());
-          setCount(newCount);
-        } else {
-          localStorage.setItem('visitor_count', '315');
-          setCount(315);
-        }
-        sessionStorage.setItem('sc_counted', 'true');
-      }
-    };
 
     fetchVisitorCount();
-    
-    // Set up a counter update when the StatCounter script loads (if it does)
-    const checkScLoaded = setInterval(() => {
-      if (window._statcounter) {
-        incrementLocalCount();
-        clearInterval(checkScLoaded);
-      }
-    }, 1000);
-    
-    // Clean up interval
-    return () => clearInterval(checkScLoaded);
+
+    return () => {
+      // Cleanup any intervals if component unmounts
+    };
   }, []);
 
   return (
