@@ -8,60 +8,101 @@ const VisitorCounter = () => {
 
   useEffect(() => {
     const fetchVisitorCount = async () => {
+      // Check if we're in a local development environment
+      const isLocalhost = window.location.hostname === 'localhost' || 
+                          window.location.hostname === '127.0.0.1';
+      
+      // If localhost, use localStorage directly without trying the API
+      if (isLocalhost) {
+        handleLocalhostCounter();
+        return;
+      }
+      
+      // For production, try CountAPI with fallbacks
       try {
-        // Calculate a unique page view ID based on timestamp
-        // This ensures we can track refreshes while avoiding counting duplicates in a short time
-        const viewId = Math.floor(Date.now() / 10000); // Changes every 10 seconds
-        const lastViewId = sessionStorage.getItem('last_view_id');
+        const namespace = 'zackweb-portfolio';
+        const key = 'visits';
         
-        // Get or initialize stored count
-        const storedCount = localStorage.getItem('visitor_count');
-        let currentCount = storedCount ? parseInt(storedCount) : 314;
+        const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+        const data = await response.json();
         
-        // Increment count if this is a new view (refresh)
-        if (lastViewId !== viewId.toString()) {
-          currentCount += 1;
-          localStorage.setItem('visitor_count', currentCount.toString());
-          sessionStorage.setItem('last_view_id', viewId.toString());
-          
-          console.log('Counter incremented to:', currentCount);
-        }
-        
-        setCount(currentCount);
+        setCount(data.value);
+        console.log('CountAPI count:', data.value);
         setIsLoading(false);
-        
-        // Check StatCounter to see if it's loaded
-        const checkScLoaded = setInterval(() => {
-          if (window._statcounter) {
-            console.log('StatCounter detected');
-            clearInterval(checkScLoaded);
-          }
-        }, 1000);
-        
-        // Clear interval after 5 seconds (avoid memory leaks)
-        setTimeout(() => clearInterval(checkScLoaded), 5000);
-        
       } catch (error) {
-        console.error('Error with visitor counter:', error);
+        console.error('CountAPI error:', error);
         
-        // Fallback to GitHub Actions JSON
+        // First fallback - try to get the count without incrementing
         try {
-          const fallbackResponse = await fetch('/zakaria-oumghar/api/visitors.json');
-          const fallbackData = await fallbackResponse.json();
-          setCount(fallbackData.count);
-        } catch (fallbackError) {
-          setCount(315); // Ultimate fallback
+          const getResponse = await fetch(`https://api.countapi.xyz/get/zackweb-portfolio/visits`);
+          const getData = await getResponse.json();
+          setCount(getData.value);
+          console.log('CountAPI get count:', getData.value);
+        } catch (secondError) {
+          console.error('CountAPI fallback error:', secondError);
+          
+          // Second fallback - use a different CountAPI domain
+          try {
+            const altResponse = await fetch(`https://countapi.vercel.app/api/zackweb-portfolio/visits/increment`);
+            const altData = await altResponse.json();
+            setCount(altData.value);
+            console.log('Alternative CountAPI count:', altData.value);
+          } catch (thirdError) {
+            console.error('All CountAPI attempts failed:', thirdError);
+            handleLocalhostCounter(); // Use localStorage as final fallback
+          }
         }
         
         setIsLoading(false);
       }
     };
+    
+    // Handle localhost or fallback counter
+    const handleLocalhostCounter = () => {
+      // For localhost/fallback, use a more sophisticated localStorage approach
+      try {
+        const storedData = localStorage.getItem('visitor_data');
+        let data = storedData ? JSON.parse(storedData) : {
+          count: 315,
+          visits: [],
+          lastRefresh: null
+        };
+        
+        // Get current date and time for tracking
+        const now = new Date();
+        const today = now.toDateString();
+        
+        // Only count new visits/refreshes if more than 30 seconds have passed
+        const lastRefresh = data.lastRefresh ? new Date(data.lastRefresh) : null;
+        const isNewVisit = !lastRefresh || (now - lastRefresh > 30000);
+        
+        if (isNewVisit) {
+          // Add this visit to the list
+          data.visits.push(now.toISOString());
+          // Keep only most recent 50 visits to avoid localStorage bloat
+          if (data.visits.length > 50) {
+            data.visits = data.visits.slice(-50);
+          }
+          // Increment count
+          data.count += 1;
+          // Update last refresh time
+          data.lastRefresh = now.toISOString();
+          
+          // Store updated data
+          localStorage.setItem('visitor_data', JSON.stringify(data));
+          console.log('Updated localStorage count:', data.count);
+        }
+        
+        setCount(data.count);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('localStorage error:', error);
+        setCount(315); // Ultimate fallback
+        setIsLoading(false);
+      }
+    };
 
     fetchVisitorCount();
-
-    return () => {
-      // Cleanup any intervals if component unmounts
-    };
   }, []);
 
   return (
