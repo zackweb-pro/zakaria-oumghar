@@ -131,6 +131,7 @@ const Navbar = () => {
         {/* Mobile Navigation Button */}
         <div className="md:hidden flex items-center space-x-4">
           <LanguageSwitcher />
+            <VisitorCounter />
           
           <motion.button
             onClick={toggleDarkMode}
