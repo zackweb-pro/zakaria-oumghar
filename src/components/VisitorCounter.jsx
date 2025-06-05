@@ -14,7 +14,7 @@ const VisitorCounter = () => {
         const key = 'visits';
         
         // First visit from this browser increments count
-        const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+        const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}/?amount=1`);
         const data = await response.json();
         
         // Set the count from the API
