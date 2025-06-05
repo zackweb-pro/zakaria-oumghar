@@ -7,53 +7,46 @@ const VisitorCounter = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Use a flag to prevent multiple API calls
+    const hasIncrementedKey = 'has_incremented_counter';
+    const lastIncrementTime = sessionStorage.getItem(hasIncrementedKey);
+    const now = Date.now();
+    
+    // Only increment once per session or if more than 30 minutes have passed
+    const shouldIncrement = !lastIncrementTime || (now - parseInt(lastIncrementTime)) > 30 * 60 * 1000;
+    
+    // Create an AbortController to cancel duplicate requests
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchVisitorCount = async () => {
-      // Check if we're in a local development environment
-      const isLocalhost = window.location.hostname === 'localhost' || 
-                          window.location.hostname === '127.0.0.1';
-      
-      // If localhost, use localStorage directly without trying the API
-      if (isLocalhost) {
-        handleLocalhostCounter();
-        return;
-      }
-      
-      // For production, try CountAPI with fallbacks
       try {
-        const namespace = 'zackweb-portfolio';
-        const key = 'visits';
+        // For production, use the specified CountAPI endpoint
+        let endpoint = 'https://countapi.mileshilliard.com/api/v1/hit/zakaria-oumghar-portfolio';
         
-        const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+        // If we've already incremented, use the get endpoint instead
+        if (!shouldIncrement) {
+          // Use get instead of hit to avoid incrementing again
+          endpoint = endpoint.replace('/hit/', '/get/');
+        }
+        
+        const response = await fetch(endpoint, { signal });
         const data = await response.json();
         
         setCount(data.value);
         console.log('CountAPI count:', data.value);
-        setIsLoading(false);
-      } catch (error) {
-        console.error('CountAPI error:', error);
         
-        // First fallback - try to get the count without incrementing
-        try {
-          const getResponse = await fetch(`https://api.countapi.xyz/get/zackweb-portfolio/visits`);
-          const getData = await getResponse.json();
-          setCount(getData.value);
-          console.log('CountAPI get count:', getData.value);
-        } catch (secondError) {
-          console.error('CountAPI fallback error:', secondError);
-          
-          // Second fallback - use a different CountAPI domain
-          try {
-            const altResponse = await fetch(`https://countapi.vercel.app/api/zackweb-portfolio/visits/increment`);
-            const altData = await altResponse.json();
-            setCount(altData.value);
-            console.log('Alternative CountAPI count:', altData.value);
-          } catch (thirdError) {
-            console.error('All CountAPI attempts failed:', thirdError);
-            handleLocalhostCounter(); // Use localStorage as final fallback
-          }
+        // Record that we've incremented the counter
+        if (shouldIncrement) {
+          sessionStorage.setItem(hasIncrementedKey, now.toString());
         }
         
         setIsLoading(false);
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          console.error('CountAPI error:', error);
+          handleLocalhostCounter(); // Fall back to localStorage counter
+        }
       }
     };
     
@@ -69,40 +62,26 @@ const VisitorCounter = () => {
           }
         } catch (parseError) {
           console.log('Error parsing stored data:', parseError);
-          // Clear corrupted data
           localStorage.removeItem('visitor_data');
         }
         
         // Make sure we have a properly structured data object
-        if (!data || typeof data !== 'object' || !Array.isArray(data.visits)) {
-          // Reset with proper structure if data is missing or malformed
+        if (!data || typeof data !== 'object') {
+          // Reset with proper structure
           data = {
             count: 315,
-            visits: [],
             lastRefresh: null
           };
         }
         
-        // Get current date and time for tracking
+        // Get current date and time
         const now = new Date();
         
-        // Only count new visits/refreshes if more than 30 seconds have passed
+        // Only count new visits if more than 30 seconds have passed
         const lastRefresh = data.lastRefresh ? new Date(data.lastRefresh) : null;
         const isNewVisit = !lastRefresh || (now - lastRefresh > 30000);
         
         if (isNewVisit) {
-          // Add this visit to the list (safely)
-          if (!Array.isArray(data.visits)) {
-            data.visits = [];
-          }
-          
-          data.visits.push(now.toISOString());
-          
-          // Keep only most recent 50 visits
-          if (data.visits.length > 50) {
-            data.visits = data.visits.slice(-50);
-          }
-          
           // Increment count
           data.count = (typeof data.count === 'number') ? data.count + 1 : 316;
           
@@ -123,8 +102,19 @@ const VisitorCounter = () => {
       }
     };
 
+    // Uncomment this to use localStorage in development
+    // if (isLocalhost) {
+    //   handleLocalhostCounter();
+    //   return;
+    // }
+
     fetchVisitorCount();
-  }, []);
+
+    // Cleanup function to abort any pending requests when the component unmounts
+    return () => {
+      controller.abort();
+    };
+  }, []); // Empty dependency array to ensure it only runs once
 
   return (
     <motion.div 
