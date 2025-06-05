@@ -9,62 +9,83 @@ const VisitorCounter = () => {
   useEffect(() => {
     const fetchVisitorCount = async () => {
       try {
-        // Using simpleanalyticsdev.xyz counter API - more reliable than CountAPI
-        const url = 'https://simpleanalyticsdev.xyz/api/count?domain=zakaria-oumghar';
+        // StatCounter doesn't provide a direct API for visitor count in components
+        // So we'll use a combination of approaches
         
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          // Prevent caching to always get fresh count
-          cache: 'no-cache'
-        });
+        // First, check if we can get the count from StatCounter
+        const projectId = 13141616;
         
-        const data = await response.json();
-        setCount(data.count + 100); // Add baseline for a more established look
+        // Try to fetch the count from StatCounter's public stats
+        // NOTE: This isn't a documented API and may not work reliably
+        try {
+          const statUrl = `https://statcounter.com/p${projectId}/summary/`;
+          // This is just to check if we can access public stats - won't actually use result
+          await fetch(statUrl, { mode: 'no-cors' });
+          
+          // Increment the local count to show activity
+          incrementLocalCount();
+        } catch (e) {
+          console.log("StatCounter fetch check failed", e);
+        }
+        
+        // Use localStorage as our primary display source since StatCounter
+        // doesn't provide a direct API to get the count
+        const storedCount = localStorage.getItem('visitor_count');
+        if (storedCount) {
+          setCount(parseInt(storedCount));
+        } else {
+          // Start with a baseline count + today
+          const baseCount = 314;
+          localStorage.setItem('visitor_count', baseCount.toString());
+          setCount(baseCount);
+        }
+        
         setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching visitor count:', error);
+        console.error('Error with visitor counter:', error);
         
-        // Fallback to stored JSON data
+        // Fallback to GitHub Actions JSON
         try {
           const fallbackResponse = await fetch('/zakaria-oumghar/api/visitors.json');
           const fallbackData = await fallbackResponse.json();
           setCount(fallbackData.count);
         } catch (fallbackError) {
-          // Ultimate fallback - localStorage counter
-          const storedCount = localStorage.getItem('visitor_count');
-          if (storedCount) {
-            setCount(parseInt(storedCount));
-          } else {
-            setCount(314);
-            localStorage.setItem('visitor_count', '314');
-          }
+          setCount(314);
         }
+        
         setIsLoading(false);
+      }
+    };
+    
+    // Function to increment the local counter
+    const incrementLocalCount = () => {
+      // Only increment once per session
+      if (sessionStorage.getItem('sc_counted') !== 'true') {
+        const currentCount = localStorage.getItem('visitor_count');
+        if (currentCount) {
+          const newCount = parseInt(currentCount) + 1;
+          localStorage.setItem('visitor_count', newCount.toString());
+          setCount(newCount);
+        } else {
+          localStorage.setItem('visitor_count', '315');
+          setCount(315);
+        }
+        sessionStorage.setItem('sc_counted', 'true');
       }
     };
 
     fetchVisitorCount();
     
-    // Update localStorage count on visit
-    const updateLocalCount = () => {
-      const currentCount = localStorage.getItem('visitor_count');
-      if (currentCount) {
-        const newCount = parseInt(currentCount) + 1;
-        localStorage.setItem('visitor_count', newCount.toString());
-      } else {
-        localStorage.setItem('visitor_count', '315');
+    // Set up a counter update when the StatCounter script loads (if it does)
+    const checkScLoaded = setInterval(() => {
+      if (window._statcounter) {
+        incrementLocalCount();
+        clearInterval(checkScLoaded);
       }
-    };
+    }, 1000);
     
-    // Only count once per session
-    if (!sessionStorage.getItem('counted')) {
-      updateLocalCount();
-      sessionStorage.setItem('counted', 'true');
-    }
+    // Clean up interval
+    return () => clearInterval(checkScLoaded);
   }, []);
 
   return (
