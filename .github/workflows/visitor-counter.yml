@@ -30,7 +30,7 @@ jobs:
             increment=$(( RANDOM % 7 + 3 ))
             newCount=$((count + increment))
           else
-            newCount=587
+            newCount=314
           fi
 
           echo "{\"count\":$newCount,\"updated\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}" > public/api/visitors.json

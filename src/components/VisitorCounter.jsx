@@ -7,45 +7,36 @@ const VisitorCounter = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const updateVisitorCount = () => {
+    const fetchVisitorCount = async () => {
       try {
-        // Get stored stats or create new
-        const stored = localStorage.getItem('visitor_stats');
-        const defaultStats = {
-          baseCount: 587,
-          lastVisit: new Date().toISOString(),
-          visitDates: [new Date().toDateString()]
-        };
+        // Your site's unique namespace - use your domain or GitHub repo name
+        const namespace = 'zakaria-oumghar-portfolio';
+        const key = 'visits';
         
-        let stats = stored ? JSON.parse(stored) : defaultStats;
-        const today = new Date().toDateString();
+        // First visit from this browser increments count
+        const response = await fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+        const data = await response.json();
         
-        // Check if this is a new unique day
-        if (!stats.visitDates.includes(today)) {
-          stats.visitDates.push(today);
-          // Keep only last 30 days to avoid localStorage bloat
-          if (stats.visitDates.length > 30) {
-            stats.visitDates.shift();
-          }
-          // Increment by 1-3 for each new day visit
-          stats.baseCount += Math.floor(Math.random() * 3) + 1;
-        }
-        
-        stats.lastVisit = new Date().toISOString();
-        localStorage.setItem('visitor_stats', JSON.stringify(stats));
-        
-        // Calculate display count: base + unique days
-        setCount(stats.baseCount + stats.visitDates.length);
+        // Set the count from the API
+        setCount(data.value);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error with visitor counter:', error);
-        setCount(612);
+        console.error('Error fetching visitor count:', error);
+        
+        // Fallback to GitHub Actions count if API fails
+        try {
+          const fallbackResponse = await fetch('/zakaria-oumghar/api/visitors.json');
+          const fallbackData = await fallbackResponse.json();
+          setCount(fallbackData.count);
+        } catch (fallbackError) {
+          // Ultimate fallback
+          setCount(314);
+        }
         setIsLoading(false);
       }
     };
 
-    // Add a delay for visual appeal
-    setTimeout(updateVisitorCount, 800);
+    fetchVisitorCount();
   }, []);
 
   return (
@@ -61,17 +52,14 @@ const VisitorCounter = () => {
       {isLoading ? (
         <div className="h-4 w-12 bg-gray-200 dark:bg-dark-400 rounded animate-pulse"></div>
       ) : (
-        <motion.div 
-          className="flex items-center"
+        <motion.span 
+          className="text-xs font-medium text-gray-700 dark:text-gray-300"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
         >
-          <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-            {count?.toLocaleString()}
-            <span className="text-xs ml-1 text-gray-500 dark:text-gray-400">visits</span>
-          </span>
-        </motion.div>
+          {count?.toLocaleString()}
+          <span className="text-xs ml-1 text-gray-500 dark:text-gray-400">visits</span>
+        </motion.span>
       )}
     </motion.div>
   );
