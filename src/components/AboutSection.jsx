@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FiCode, FiAward, FiCalendar, FiMapPin } from 'react-icons/fi';
+import { FiCode, FiAward, FiCalendar, FiMapPin, FiBriefcase, FiGlobe } from 'react-icons/fi';
 
 const AboutSection = () => {
   const { t } = useTranslation();
@@ -50,6 +50,7 @@ const AboutSection = () => {
 
   const education = Array.isArray(t('about.educationList', { returnObjects: true })) ? t('about.educationList', { returnObjects: true }) : [];
   const interests = Array.isArray(t('about.interestsList', { returnObjects: true })) ? t('about.interestsList', { returnObjects: true }) : [];
+  const experience = Array.isArray(t('about.experienceList', { returnObjects: true })) ? t('about.experienceList', { returnObjects: true }) : [];
 
   return (
     <section 
@@ -162,7 +163,121 @@ const AboutSection = () => {
                 {t('about.description')}
               </motion.p>
 
-              {/* New Modern Education Timeline */}
+              {/* New Experience Timeline */}
+              <div className="mt-12 relative">
+                <h3 className="text-xl font-semibold mb-10 flex items-center">
+                  <span className="mr-2">{t('about.experience')}</span>
+                  <motion.div 
+                    className="h-px bg-gradient-to-r from-primary-500 via-primary-300 to-transparent flex-grow ml-3" 
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: "100%", opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
+                </h3>
+                
+                {/* Timeline connector */}
+                <motion.div 
+                  className="absolute left-0 top-10 bottom-20 w-[2px] bg-gradient-to-b from-primary-500 via-primary-300 to-transparent"
+                  initial={{ height: 0, opacity: 0 }}
+                  whileInView={{ height: "100%", opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.5 }}
+                />
+                
+                {/* Experience cards */}
+                <div className="space-y-16 ml-6 relative">
+                  {experience.map((exp, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.7, delay: index * 0.2 }}
+                      className="relative"
+                    >
+                      {/* Timeline node */}
+                      <motion.div 
+                        className="absolute -left-10 w-3.5 h-3.5 rounded-full bg-primary-500 border-4 border-white dark:border-dark-200 shadow-md"
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        viewport={{ once: true }}
+                        whileHover={{ scale: 1.5, backgroundColor: "#0284c7" }}
+                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                      />
+                      
+                      {/* Glow effect for the node */}
+                      <div className="absolute -left-10 w-3.5 h-3.5 rounded-full bg-primary-400 opacity-40 blur-sm" />
+
+                      {/* Experience card */}
+                      <motion.div 
+                        className="relative bg-white dark:bg-dark-100 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700/30"
+                        whileHover={{ 
+                          y: -5, 
+                          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
+                          borderColor: "rgba(125, 211, 252, 0.5)"
+                        }}
+                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                      >
+                        {/* Glassmorphism card accent */}
+                        <div className="absolute top-0 right-0 h-20 w-20 bg-primary-500/5 dark:bg-primary-500/10 rounded-bl-full rounded-tr-xl" />
+                        
+                        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 relative z-10 flex items-center">
+                          <span>{exp.position}</span>
+                          <span className="ml-2 px-2.5 py-0.5 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-xs rounded-full">
+                            {exp.type}
+                          </span>
+                        </h3>
+                        
+                        <div className="mt-2 flex items-center text-primary-600 dark:text-primary-400 text-sm relative z-10">
+                          <FiBriefcase className="mr-2 flex-shrink-0" />
+                          <p>{exp.company}</p>
+                        </div>
+                        
+                        <div className="mt-1 flex items-start gap-2 text-gray-500 dark:text-gray-400 text-sm relative z-10">
+                          <FiCalendar className="mt-0.5 flex-shrink-0" />
+                          <p>{exp.period}</p>
+                        </div>
+                        
+                        <div className="mt-1 flex items-start gap-2 text-gray-500 dark:text-gray-400 text-sm relative z-10">
+                          <FiMapPin className="mt-0.5 flex-shrink-0" />
+                          <p>{exp.location}</p>
+                        </div>
+                        
+                        {/* Achievements/tasks with bullets */}
+                        <ul className="mt-3 space-y-2 pl-5 list-disc text-gray-600 dark:text-gray-300 text-sm">
+                          {exp.achievements.map((achievement, idx) => (
+                            <li key={idx}>{achievement}</li>
+                          ))}
+                        </ul>
+                        
+                        {/* Technology tags */}
+                        {exp.technologies && (
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {exp.technologies.map((tech, idx) => (
+                              <span 
+                                key={idx}
+                                className="text-xs px-2 py-1 rounded-md bg-gray-100 dark:bg-dark-300 text-gray-700 dark:text-gray-300"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        
+                        {/* Animated underline on hover */}
+                        <motion.div 
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 to-primary-300"
+                          initial={{ width: "0%", left: "50%" }}
+                          whileHover={{ width: "100%", left: "0%" }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      </motion.div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Education section - keep existing */}
               <div className="mt-12 relative">
                 <h3 className="text-xl font-semibold mb-10 flex items-center">
                   <span className="mr-2">{t('about.education')}</span>
@@ -247,7 +362,7 @@ const AboutSection = () => {
                 </div>
               </div>
 
-              {/* Interests section - unchanged */}
+              {/* Interests section - keep existing */}
               <div className="mt-16">
                 <h3 className="text-xl font-semibold mb-6 flex items-center">
                   <span className="mr-2">{t('about.interests')}</span>
@@ -292,12 +407,8 @@ const AboutSection = () => {
               </div>
             </motion.div>
 
-            {/* Image section - unchanged */}
-            <motion.div 
-              variants={itemVariants} 
-              className="relative"
-              style={{ perspective: "1000px" }}
-            >
+            {/* Image section - keep existing */}
+            <motion.div variants={itemVariants} className="relative" style={{ perspective: "1000px" }}>
               <div className="sticky top-24">
                 <motion.div 
                   ref={imageRef}

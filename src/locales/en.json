@@ -22,6 +22,7 @@
     "university": "Software Engineering",
     "period": "2022 - Present",
     "interests": "Interests",
+    "experience": "Experience",
     "educationList": [
     {
       "degree": "Software Engineering",
@@ -39,7 +40,22 @@
       "period": "2018 - 2021"
     }
   ],
-    "interestsList": ["UI/UX", "Backend engineering", "DevOps", "Web Development", "Mobile Apps", "AI & Machine Learning", "Open Source Contributions", "Playing Video Games", "Playing Chess"]
+    "interestsList": ["UI/UX", "Backend engineering", "DevOps", "Web Development", "Mobile Apps", "AI & Machine Learning", "Open Source Contributions", "Playing Video Games", "Playing Chess"],
+    "experienceList": [
+      {
+        "company": "Somap & Services",
+        "position": "Software Engineering Intern",
+        "type": "Hybrid",
+        "period": "July - August 2024",
+        "location": "Kenitra, Morocco",
+        "achievements": [
+          "Developed a complete digital solution (GAP) for purchase tracking and personnel management",
+          "Designed and implemented a full-stack web application using React.js, Tailwind CSS, Node.js, and MySQL",
+          "Collaborated with stakeholders to identify needs and deliver a user-friendly interface"
+        ],
+        "technologies": ["React.js", "Node.js", "MySQL", "Tailwind CSS"]
+      }
+    ]
   },
   "skills": {
     "title": "My Skills",

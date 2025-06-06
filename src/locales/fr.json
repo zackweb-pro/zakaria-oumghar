@@ -22,6 +22,7 @@
     "university": "Génie Logiciel",
     "period": "2022 - Présent",
     "interests": "Centres d'intérêt",
+    "experience": "Expérience",
 
    "educationList": [
   {
@@ -40,7 +41,22 @@
     "period": "2018 - 2021"
   }
 ],
-    "interestsList": ["UI/UX", "Ingénierie backend", "DevOps", "Dévelopment web", "Les applications mobile", "AI & Machine Learning", "Contributions Open Source", "jouer aux jeux vidéo", "jouer au échecs"]
+    "interestsList": ["UI/UX", "Ingénierie backend", "DevOps", "Dévelopment web", "Les applications mobile", "AI & Machine Learning", "Contributions Open Source", "jouer aux jeux vidéo", "jouer au échecs"],
+    "experienceList": [
+      {
+        "company": "Somap & Services",
+        "position": "Stage en Ingénierie Logicielle",
+        "type": "Hybride",
+        "period": "Juillet - Août 2024",
+        "location": "Kénitra, Maroc",
+        "achievements": [
+          "Développement d'une solution numérique complète (GAP) pour le suivi des achats et la gestion du personnel",
+          "Conception et implémentation d'une application web full-stack utilisant React.js, Tailwind CSS, Node.js et MySQL",
+          "Collaboration avec les parties prenantes pour identifier les besoins et livrer une interface conviviale"
+        ],
+        "technologies": ["React.js", "Node.js", "MySQL", "Tailwind CSS"]
+      }
+    ]
   },
   "skills": {
     "title": "Mes Compétences",
