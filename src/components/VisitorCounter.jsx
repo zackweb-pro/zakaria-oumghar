@@ -116,13 +116,12 @@ const VisitorCounter = () => {
     };
   }, []); // Empty dependency array to ensure it only runs once
 
-  return (
-    <motion.div 
+  return (    <motion.div 
       className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-100/80 dark:bg-dark-300/60 backdrop-blur-sm border border-gray-200 dark:border-dark-200"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5 }}
-      whileHover={{ scale: 1.05 }}
+      transition={{ delay: 0.5, type: "tween" }} // Using tween instead of the default spring for better performance
+      whileHover={{ scale: 1.03 }} // Reduced scale amount for smoother performance
     >
       <FiUsers className="text-primary-500 dark:text-primary-400" />
       

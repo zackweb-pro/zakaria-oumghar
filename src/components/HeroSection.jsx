@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FiChevronRight, FiDownload, FiArrowDown, FiCode, FiEye } from 'react-icons/fi';
+import { FiDownload, FiArrowDown, FiCode, FiEye } from 'react-icons/fi';
 import profile from "../assets/portfolio-image.jpeg";
 
 const HeroSection = () => {
@@ -39,15 +39,22 @@ const HeroSection = () => {
     
     // No more profile image movement based on mouse position
   }, [mousePosition, controls]);
-
-  // Create animated floating particles
-  const particles = Array.from({ length: 30 }).map((_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 6 + 1,
-    duration: Math.random() * 20 + 10
-  }));
+  // Create animated floating particles with optimized values
+  // Using predetermined positions instead of random values on each render
+  // Reduced from 30 to 20 particles for better performance
+  const particles = Array.from({ length: 20 }).map((_, i) => {
+    // Using index-based calculations instead of random for deterministic values
+    const baseX = (i % 5) * 20; // 5 columns
+    const baseY = Math.floor(i / 5) * 25; // 4 rows
+    
+    return {
+      id: i,
+      x: baseX + (i % 7) * 3, // slight variation
+      y: baseY + (i % 3) * 5, // slight variation
+      size: 1 + (i % 6), // Size between 1-6px
+      duration: 10 + (i % 10) * 2 // Duration between 10-28s
+    };
+  });
 
   return (
     <motion.section 
@@ -71,17 +78,16 @@ const HeroSection = () => {
               height: particle.size,
               filter: "blur(0.5px)",
               boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-            }}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0.2, 0.7, 0.2],
+            }}            animate={{
+              x: [0, particle.id % 2 === 0 ? 40 : -40], // Simpler movement paths
+              y: [0, particle.id % 3 === 0 ? -30 : 30], // Simpler movement paths
+              opacity: [0.2, 0.5, 0.2], // Reduced opacity range
             }}
             transition={{
               duration: particle.duration,
               repeat: Infinity,
               repeatType: "reverse",
-              ease: "easeInOut"
+              ease: "linear" // Linear easing is less CPU intensive
             }}
           />
         ))}
@@ -154,29 +160,29 @@ const HeroSection = () => {
               animate={{ width: '100%' }}
               transition={{ delay: 0.8, duration: 0.8 }}
             />
-          </motion.div>
-
-          <motion.h1 
+          </motion.div>          <motion.h1 
             className="text-4xl md:text-6xl font-display font-bold mb-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <motion.span className="inline-block">Z</motion.span>
-            <motion.span className="inline-block">a</motion.span>
-            <motion.span className="inline-block">k</motion.span>
-            <motion.span className="inline-block">a</motion.span>
-            <motion.span className="inline-block">r</motion.span>
-            <motion.span className="inline-block">i</motion.span>
-            <motion.span className="inline-block">a</motion.span>
-            <motion.span className="inline-block">&nbsp;</motion.span>
-            <motion.span className="inline-block">O</motion.span>
-            <motion.span className="inline-block">u</motion.span>
-            <motion.span className="inline-block">m</motion.span>
-            <motion.span className="inline-block">g</motion.span>
-            <motion.span className="inline-block">h</motion.span>
-            <motion.span className="inline-block">a</motion.span>
-            <motion.span className="inline-block">r</motion.span>
+            {/* Replaced individual letter animations with 2 word groups for better performance */}
+            <motion.span 
+              className="inline-block"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+            >
+              Zakaria{' '}
+            </motion.span>
+            <motion.span 
+              className="inline-block"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+            >
+              Oumghar
+            </motion.span>
           </motion.h1>
 
           <motion.div

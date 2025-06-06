@@ -9,33 +9,46 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-50 dark:bg-dark-200 py-12 relative overflow-hidden">
-      {/* Animated particles - slightly reduced quantity for footer */}
+      {/* Minimalist animated particles for footer - further reduced and optimized */}
       <div className="absolute inset-0 opacity-20 dark:opacity-25 overflow-hidden">
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: Math.random() * 4 + 1,
-              height: Math.random() * 4 + 1,
-              filter: "blur(0.5px)",
-              boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-            }}
-            animate={{
-              x: [0, Math.random() * 60 - 30],
-              y: [0, Math.random() * 60 - 30],
-              opacity: [0.2, 0.6, 0.2],
-            }}
-            transition={{
-              duration: Math.random() * 15 + 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
-        ))}
+        {/* Reduced particle count from 12 to 6 */}
+        {[...Array(6)].map((_, i) => {
+          // Fixed positions for better performance
+          const positions = [
+            {x: 20, y: 30}, {x: 50, y: 20}, {x: 80, y: 35},
+            {x: 25, y: 70}, {x: 60, y: 80}, {x: 85, y: 65}
+          ];
+          
+          // Fixed sizes for consistency
+          const size = 2 + (i % 3); // 2-4px
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
+              style={{
+                left: `${positions[i].x}%`,
+                top: `${positions[i].y}%`,
+                width: size,
+                height: size,
+                filter: "blur(0.5px)",
+                boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
+              }}
+              animate={{
+                // Limited movement range
+                x: [0, (i % 2 === 0) ? 20 : -20], 
+                y: [0, (i % 2 === 0) ? -15 : 15],
+                opacity: [0.2, 0.4, 0.2], // Reduced opacity range
+              }}
+              transition={{
+                duration: 15 + (i * 3), // Between 15-30s
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "linear" // More efficient than easeInOut
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Subtle mesh gradient background */}

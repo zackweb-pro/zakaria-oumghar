@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FiGithub, FiExternalLink, FiCode, FiArrowRight } from 'react-icons/fi';
+import { FiGithub, FiCode, FiArrowRight } from 'react-icons/fi';
 import somap_image from '../assets/dashboardsomap.png';
 import searchstage from '../assets/searchstage.jpeg';
 import chatbot_ensias from '../assets/chatbot_ensias.png';
@@ -89,33 +89,47 @@ const ProjectsSection = () => {
 
   return (
     <section id="projects" className="section-padding bg-gray-50 dark:bg-dark-200 relative overflow-hidden">
-      {/* Animated background particles like in Hero Section */}
+      {/* Optimized background particles with reduced count */}
       <div className="absolute inset-0 opacity-25 dark:opacity-30 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: Math.random() * 6 + 1,
-              height: Math.random() * 6 + 1,
-              filter: "blur(0.5px)",
-              boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-            }}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0.2, 0.7, 0.2],
-            }}
-            transition={{
-              duration: Math.random() * 20 + 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
-        ))}
+        {/* Reduced particle count from 20 to 8 */}
+        {[...Array(8)].map((_, i) => {
+          // Fixed positions in a grid pattern for better performance
+          const positionMap = [
+            {x: 15, y: 20}, {x: 45, y: 25}, {x: 75, y: 15}, {x: 85, y: 45},
+            {x: 25, y: 65}, {x: 55, y: 70}, {x: 80, y: 85}, {x: 40, y: 90}
+          ];
+          
+          // Consistent sizes between 2-5px instead of random
+          const size = 2 + (i % 4);
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
+              style={{
+                left: `${positionMap[i].x}%`,
+                top: `${positionMap[i].y}%`,
+                width: size,
+                height: size,
+                filter: "blur(0.5px)",
+                boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
+              }}
+              animate={{
+                // Simplified movement patterns
+                x: [0, i % 2 === 0 ? 30 : -30], 
+                y: [0, i % 3 === 0 ? -25 : 25],
+                opacity: [0.2, 0.5, 0.2], // Reduced opacity range
+              }}
+              transition={{
+                // More efficient animation transitions
+                duration: 15 + (i * 2), // Between 15-29s
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "linear" // More efficient than easeInOut
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Mesh gradient background like in Hero Section */}

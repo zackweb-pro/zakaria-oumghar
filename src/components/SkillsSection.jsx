@@ -304,33 +304,45 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="section-padding relative overflow-hidden">
-      {/* Animated background particles like in other sections */}
+      {/* Optimized background particles with reduced count */}
       <div className="absolute inset-0 opacity-25 dark:opacity-30 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: Math.random() * 6 + 1,
-              height: Math.random() * 6 + 1,
-              filter: "blur(0.5px)",
-              boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-            }}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0.2, 0.7, 0.2],
-            }}
-            transition={{
-              duration: Math.random() * 20 + 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
-        ))}
+        {/* Reduced from 20 to 10 particles for better performance */}
+        {[...Array(10)].map((_, i) => {
+          // Create a grid layout for more efficient positioning
+          const positions = [
+            {x: 10, y: 10}, {x: 30, y: 20}, {x: 50, y: 15}, {x: 70, y: 25}, {x: 90, y: 10},
+            {x: 15, y: 80}, {x: 35, y: 60}, {x: 55, y: 70}, {x: 75, y: 50}, {x: 85, y: 90}
+          ];
+          
+          // Fixed sizes for better performance
+          const sizes = [2, 3, 4, 3, 2, 4, 3, 2, 4, 3];
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
+              style={{
+                left: `${positions[i].x}%`,
+                top: `${positions[i].y}%`,
+                width: sizes[i],
+                height: sizes[i],
+                filter: "blur(0.5px)",
+                boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
+              }}
+              animate={{
+                x: [0, (i % 2 === 0) ? 25 : -25], // Simpler animation paths
+                y: [0, (i % 3 === 0) ? -20 : 20],
+                opacity: [0.2, 0.5, 0.2], // Reduced opacity range
+              }}
+              transition={{
+                duration: 12 + (i * 2), // Between 12-30s
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "linear" // More efficient than easeInOut
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Mesh gradient background like in other sections */}
@@ -368,25 +380,32 @@ const SkillsSection = () => {
         }}
       />
 
-      {/* Keep your existing animated background blurs */}
-      <motion.div 
+      {/* Keep your existing animated background blurs */}      <motion.div 
         className="absolute top-40 left-20 w-64 h-64 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl pointer-events-none"
         animate={{ 
-          x: [0, 20, 0], 
-          y: [0, -30, 0], 
-          scale: [1, 1.1, 1] 
+          x: [0, 10, 0], // Reduced movement range
+          y: [0, -15, 0], // Reduced movement range
+          scale: [1, 1.05, 1] // Reduced scaling for better performance
         }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ 
+          duration: 20, // Longer duration means less frequent updates
+          repeat: Infinity, 
+          ease: "linear" // Linear easing is less resource-intensive
+        }}
       />
       
       <motion.div 
         className="absolute bottom-20 right-10 w-80 h-80 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl pointer-events-none"
         animate={{ 
-          x: [0, -30, 0], 
-          y: [0, 20, 0], 
-          scale: [1, 1.15, 1] 
+          x: [0, -15, 0], // Reduced movement range
+          y: [0, 10, 0], // Reduced movement range
+          scale: [1, 1.07, 1] // Reduced scaling
         }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ 
+          duration: 25, // Longer duration for less frequent renders
+          repeat: Infinity, 
+          ease: "linear" // More efficient easing function
+        }}
       />
       
       <div className="container mx-auto px-4">

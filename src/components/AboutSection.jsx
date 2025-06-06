@@ -66,33 +66,44 @@ const AboutSection = () => {
       <div className="hidden lg:block absolute left-10 top-1/3 w-8 h-8 rounded-full bg-primary-500/10 dark:bg-primary-400/10" style={{ animation: 'orbit 15s infinite linear' }}></div>
       <div className="hidden lg:block absolute right-10 top-1/4 w-4 h-4 rounded-full bg-primary-500/10 dark:bg-primary-400/10" style={{ animation: 'orbit 12s infinite linear reverse' }}></div>
 
-      {/* Animated background particles like in Hero Section */}
+      {/* Optimized background particles with reduced count and complexity */}
       <div className="absolute inset-0 opacity-25 dark:opacity-30 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: Math.random() * 6 + 1,
-              height: Math.random() * 6 + 1,
-              filter: "blur(0.5px)",
-              boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-            }}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0.2, 0.7, 0.2],
-            }}
-            transition={{
-              duration: Math.random() * 20 + 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
-        ))}
+        {[...Array(12)].map((_, i) => {
+          // Use fixed positions based on index for better performance
+          const col = i % 4;
+          const row = Math.floor(i / 4);
+          const posX = (col * 25) + 5; // 4 columns, 25% spacing with 5% offset
+          const posY = (row * 33) + 5; // 3 rows, 33% spacing with 5% offset
+          
+          // Size and styles based on predictable patterns rather than random values
+          const size = 2 + (i % 5); // 2-6px size
+          
+          return (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
+              style={{
+                left: `${posX}%`,
+                top: `${posY}%`,
+                width: size,
+                height: size,
+                filter: "blur(0.5px)",
+                boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
+              }}
+              animate={{
+                x: [0, i % 2 === 0 ? 30 : -30], // Alternating directions
+                y: [0, i % 3 === 0 ? 20 : -20], // Variation in movement
+                opacity: [0.2, 0.5, 0.2], // Reduced opacity range
+              }}
+              transition={{
+                duration: 12 + (i * 1.5), // Deterministic durations 12-30s
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "linear" // Linear easing is less CPU intensive
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Mesh gradient background like in Hero Section */}
