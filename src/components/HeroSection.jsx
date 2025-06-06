@@ -3,6 +3,7 @@ import { motion, useAnimation } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiDownload, FiArrowDown, FiCode, FiEye } from 'react-icons/fi';
 import profile from "../assets/portfolio-image.jpeg";
+import { throttle } from '../utils/animationUtils';
 
 const HeroSection = () => {
   const { t } = useTranslation();
@@ -11,9 +12,9 @@ const HeroSection = () => {
   const [isHovering, setIsHovering] = useState(false);
   const containerRef = useRef(null);
   const profileRef = useRef(null);
-
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    // Throttled mouse move handler - only updates every 50ms for better performance
+    const handleMouseMove = throttle((e) => {
       if (!containerRef.current) return;
       
       const { left, top, width, height } = containerRef.current.getBoundingClientRect();
@@ -21,7 +22,7 @@ const HeroSection = () => {
       const y = (e.clientY - top) / height;
       
       setMousePosition({ x, y });
-    };
+    }, 50); // 50ms throttle for smoother performance
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);

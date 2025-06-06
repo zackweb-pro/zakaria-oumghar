@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiMail, FiMapPin, FiPhone, FiSend, FiCheck, FiX, FiArrowRight } from 'react-icons/fi';
 import { 
@@ -8,13 +8,14 @@ import {
   FaInstagram 
 } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
+import { useThrottledInView } from '../utils/animationUtils';
 
 const ContactSection = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
   const formRef = useRef(null);
   const mousePosRef = useRef({ x: 0, y: 0 });
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
+  const isInView = useThrottledInView(ref, { once: false, amount: 0.2 }, 150);
   const [formStatus, setFormStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeFocus, setActiveFocus] = useState(null);

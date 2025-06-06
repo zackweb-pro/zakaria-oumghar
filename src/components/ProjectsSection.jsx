@@ -1,17 +1,17 @@
 import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiGithub, FiCode, FiArrowRight } from 'react-icons/fi';
+import { useThrottledInView } from '../utils/animationUtils';
 import somap_image from '../assets/dashboardsomap.png';
 import searchstage from '../assets/searchstage.jpeg';
 import chatbot_ensias from '../assets/chatbot_ensias.png';
 import formsaver_pro from '../assets/FormSaver Pro.png';
 import dep_manage from '../assets/dep_manage.png'; 
 
-const ProjectsSection = () => {
-  const { t } = useTranslation();
+const ProjectsSection = () => {  const { t } = useTranslation();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.1 });
+  const isInView = useThrottledInView(ref, { once: false, amount: 0.1 }, 120);
   const [activeIndex, setActiveIndex] = useState(null);
 
   const containerVariants = {

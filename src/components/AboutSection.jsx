@@ -1,24 +1,46 @@
-import { useRef } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FiCode, FiAward, FiCalendar, FiMapPin, FiBriefcase, FiGlobe } from 'react-icons/fi';
+import { FiCode, FiAward, FiCalendar, FiMapPin, FiBriefcase } from 'react-icons/fi';
+import { useThrottledInView, throttle } from '../utils/animationUtils';
 
-const AboutSection = () => {
-  const { t } = useTranslation();
+const AboutSection = () => {  const { t } = useTranslation();
   const ref = useRef(null);
   const sectionRef = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.3 });
+  // Using throttled in-view detection (100ms throttle)
+  const isInView = useThrottledInView(ref, { once: false, amount: 0.3 }, 100);
   const imageRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  });
   
-  // Parallax effect values
-  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 3]);
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.05, 1]);
-
+  // For scroll-based effects, let's use a simplified approach without dependencies
+  const [scrollEffects, setScrollEffects] = useState({ y: 0, rotate: 0, scale: 1 });
+  
+  // Add scroll event listener for parallax effect
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      if (!sectionRef.current) return;
+      
+      // Get section position relative to viewport
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate how far through the section we've scrolled (0 to 1)
+      let progress = 1 - (rect.bottom / (windowHeight + rect.height));
+      progress = Math.max(0, Math.min(1, progress)); // Clamp between 0 and 1
+      
+      // Apply transformations based on scroll progress
+      setScrollEffects({
+        y: -30 * progress,
+        rotate: 2 * progress,
+        scale: 1 + (progress < 0.5 ? progress * 0.06 : (1 - progress) * 0.06)
+      });
+    }, 100); // 100ms throttle
+    
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initialize on mount
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  // Animation variants for staggered children animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -34,18 +56,6 @@ const AboutSection = () => {
       opacity: 1,
       transition: { duration: 0.6, ease: [0.6, 0.05, 0.01, 0.9] },
     },
-  };
-
-  const floatingVariants = {
-    initial: { y: 0 },
-    animate: {
-      y: [-5, 5, -5],
-      transition: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-    }
-  };
-
-  const hoverScale = {
-    hover: { scale: 1.03, transition: { duration: 0.3 } }
   };
 
   const education = Array.isArray(t('about.educationList', { returnObjects: true })) ? t('about.educationList', { returnObjects: true }) : [];
@@ -420,10 +430,13 @@ const AboutSection = () => {
 
             {/* Image section - keep existing */}
             <motion.div variants={itemVariants} className="relative" style={{ perspective: "1000px" }}>
-              <div className="sticky top-24">
-                <motion.div 
+              <div className="sticky top-24">                <motion.div 
                   ref={imageRef}
-                  style={{ y, rotateY: rotate, scale }}
+                  style={{ 
+                    y: scrollEffects.y,
+                    rotateY: scrollEffects.rotate,
+                    scale: scrollEffects.scale
+                  }}
                   className="relative h-80 rounded-xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:rotate-y-3 hover:scale-[1.02]"
                 >
                   {/* Card frame with glassmorphism effect */}
@@ -485,15 +498,7 @@ const AboutSection = () => {
             </motion.div>
           </div>
         </motion.div>
-      </div>
-
-      {/* CSS for orbit animation */}
-      <style jsx global>{`
-        @keyframes orbit {
-          0% { transform: translateY(0) rotate(0deg) translateX(20px) rotate(0deg); }
-          100% { transform: translateY(0) rotate(360deg) translateX(20px) rotate(-360deg); }
-        }
-      `}</style>
+      </div>      {/* Orbit animation is handled by regular CSS in global styles */}
     </section>
   );
 };

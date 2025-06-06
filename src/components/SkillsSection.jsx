@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { 
   FiLayout, FiServer, FiTool,
@@ -7,11 +7,12 @@ import {
   FiDatabase, FiGlobe, FiMonitor,
   FiCoffee, FiLayers, FiZap, FiCloud
 } from 'react-icons/fi';
+import { useThrottledInView } from '../utils/animationUtils';
 
 const SkillsSection = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
+  const isInView = useThrottledInView(ref, { once: false, amount: 0.2 }, 120);
 
   const containerVariants = {
     hidden: { opacity: 0 },
