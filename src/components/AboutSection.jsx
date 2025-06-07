@@ -486,7 +486,7 @@ const AboutSection = () => {  const { t } = useTranslation();
                         <div className="w-8 h-8 rounded-full bg-primary-500/30 backdrop-blur-sm flex items-center justify-center">
                           <FiCode className="text-primary-300" />
                         </div>
-                        <span className="font-medium">Software Engineering</span>
+                        <span className="font-medium">Software Engineer - GL</span>
                       </motion.div>
                       
                       <motion.div 
