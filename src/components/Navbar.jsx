@@ -6,7 +6,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import VisitorCounter from './VisitorCounter';
 
 const Navbar = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -73,28 +73,26 @@ const Navbar = () => {
     visible: { opacity: 1, y: 0 },
   };
 
-  return (
-    <motion.nav
+  return (    <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
       className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/80 dark:bg-dark-100/80 backdrop-blur-md py-3 shadow-md' : 'py-5'
+        scrolled ? 'bg-white/90 dark:bg-dark-100/90 backdrop-blur-md py-2 lg:py-3 shadow-md' : 'py-3 lg:py-5'
       }`}
     >
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <motion.div
+      <div className="container mx-auto px-3 sm:px-4 flex justify-between items-center">        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-2xl font-display font-bold"
+          className="text-xl sm:text-2xl font-display font-bold"
         >
           <span className="gradient-text">ZACKWEB</span>
         </motion.div>
 
         {/* Desktop Navigation */}
         <motion.div
-          className="hidden md:flex items-center space-x-8"
+          className="hidden md:flex items-center space-x-4 lg:space-x-8"
           variants={navVariants}
           initial="hidden"
           animate="visible"
@@ -126,56 +124,69 @@ const Navbar = () => {
               {isDarkMode ? <FiSun className="text-xl" /> : <FiMoon className="text-xl" />}
             </motion.button>
           </motion.div>
-        </motion.div>
-
-        {/* Mobile Navigation Button */}
-        <div className="md:hidden flex items-center space-x-4">
+        </motion.div>        {/* Mobile Navigation Button */}
+        <div className="md:hidden flex items-center space-x-3">
+          <VisitorCounter />
           <LanguageSwitcher />
-            <VisitorCounter />
           
           <motion.button
             onClick={toggleDarkMode}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-200 transition-colors duration-300 hover-trigger"
+            className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-dark-200 transition-colors duration-300 hover-trigger"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
-            {isDarkMode ? <FiSun className="text-xl" /> : <FiMoon className="text-xl" />}
+            {isDarkMode ? <FiSun className="text-lg" /> : <FiMoon className="text-lg" />}
           </motion.button>
           
           <motion.button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-200 transition-colors duration-300 hover-trigger"
+            className="p-1.5 ml-1 rounded-full hover:bg-gray-100 dark:hover:bg-dark-200 transition-colors duration-300 hover-trigger"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label={isOpen ? "Close menu" : "Open menu"}
           >
-            {isOpen ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
+            {isOpen ? <FiX className="text-lg" /> : <FiMenu className="text-lg" />}
           </motion.button>
-        </div>
-
-        {/* Mobile Navigation Menu */}
+        </div>        {/* Mobile Navigation Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="absolute top-full left-0 right-0 bg-white dark:bg-dark-100 shadow-lg md:hidden"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full left-0 right-0 bg-white/95 dark:bg-dark-100/95 backdrop-blur-md shadow-lg md:hidden z-50"
+              style={{ maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}
             >
-              <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-                {navLinks.map((link) => (
-                  <a
+              <motion.div 
+                className="container mx-auto px-4 py-5 flex flex-col space-y-5"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.07
+                    }
+                  }
+                }}
+              >                {navLinks.map((link) => (
+                  <motion.a
                     key={link.name}
                     href={link.href}
-                    className="nav-link text-base font-medium py-2 hover-trigger"
+                    className="nav-link text-base font-medium py-2 border-b border-gray-100 dark:border-gray-700/30 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
                     onClick={() => setIsOpen(false)}
+                    variants={{
+                      hidden: { opacity: 0, x: -20 },
+                      visible: { opacity: 1, x: 0 }
+                    }}
                   >
                     {link.name}
-                  </a>
+                  </motion.a>
                 ))}
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
