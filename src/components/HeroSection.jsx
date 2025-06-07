@@ -359,7 +359,7 @@ const HeroSection = () => {
             </motion.div>
               {/* Experience floating badge - responsive positioning */}
             <motion.div
-              className="absolute -top-4 sm:-top-4 sm:-right-20 right-0 xs:-right-10 p-2 sm:p-3 bg-white dark:bg-dark-200 backdrop-blur-lg rounded-xl shadow-lg flex flex-col items-center justify-center z-10"
+              className="absolute -top-9 sm:-top-4 sm:-right-[100px] right-0 xs:-right-10 p-2 sm:p-3 bg-white dark:bg-dark-200 backdrop-blur-lg rounded-xl shadow-lg flex flex-col items-center justify-center z-10"
               style={{ boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.2)" }}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
