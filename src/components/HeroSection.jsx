@@ -318,20 +318,17 @@ const HeroSection = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <div className="relative">
-            <motion.div 
-              className="absolute -inset-4 bg-gradient-to-r from-primary-500 to-purple-600 dark:from-primary-400 dark:to-purple-500 rounded-full opacity-75 blur-md"
+          <div className="relative">            <motion.div 
+              className="absolute -inset-2 xs:-inset-3 sm:-inset-4 bg-gradient-to-r from-primary-500 to-purple-600 dark:from-primary-400 dark:to-purple-500 rounded-full opacity-75 blur-md"
               animate={{ 
                 scale: [1, 1.05, 1],
                 rotate: [0, 5, 0],
               }}
               transition={{ duration: 8, repeat: Infinity, repeatType: "reverse" }}
-            />
-
-            {/* Profile image container */}
+            />{/* Profile image container - with responsive sizing */}
             <motion.div 
               ref={profileRef}
-              className="relative w-64 h-64 md:w-80 md:h-80 rounded-full p-1.5 bg-gradient-to-br from-primary-500 to-purple-600 dark:from-primary-400 dark:to-purple-500"
+              className="relative w-52 h-52 xs:w-56 xs:h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full p-1.5 bg-gradient-to-br from-primary-500 to-purple-600 dark:from-primary-400 dark:to-purple-500"
               style={{ perspective: "1000px" }}
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
@@ -360,10 +357,9 @@ const HeroSection = () => {
                 </div>
               </div>
             </motion.div>
-            
-            {/* Experience floating badge */}
+              {/* Experience floating badge - responsive positioning */}
             <motion.div
-              className="absolute -top-4 -right-20 p-3 bg-white dark:bg-dark-200 backdrop-blur-lg rounded-xl shadow-lg flex flex-col items-center justify-center z-10"
+              className="absolute -top-4 sm:-top-4 sm:-right-20 right-0 xs:-right-10 p-2 sm:p-3 bg-white dark:bg-dark-200 backdrop-blur-lg rounded-xl shadow-lg flex flex-col items-center justify-center z-10"
               style={{ boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.2)" }}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -372,25 +368,22 @@ const HeroSection = () => {
                 y: -5,
                 boxShadow: "0 15px 30px -5px rgba(59, 130, 246, 0.3)",
               }}
-            >
-              <motion.div 
+            >              <motion.div 
                 animate={{ 
                   rotate: [0, 5, 0, -5, 0],
                 }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <motion.p className="text-base text-primary-500 font-bold">
+                <motion.p className="text-xs xs:text-sm sm:text-base text-primary-500 font-bold">
                   {t('hero.exp')}
                 </motion.p>
               </motion.div>
-              <motion.p className="text-sm text-gray-600 dark:text-gray-400">
+              <motion.p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                 {t('hero.field_exp')}
               </motion.p>
-            </motion.div>
-
-            {/* Developer emoji badge */}
+            </motion.div>            {/* Developer emoji badge - responsive positioning */}
             <motion.div
-              className="absolute -bottom-5 -left-5 p-3 bg-white dark:bg-dark-200 backdrop-blur-lg rounded-xl shadow-lg flex items-center justify-center"
+              className="absolute -bottom-5 sm:-bottom-5 left-0 xs:-left-5 sm:-left-5 p-2 sm:p-3 bg-white dark:bg-dark-200 backdrop-blur-lg rounded-xl shadow-lg flex items-center justify-center"
               style={{ boxShadow: "0 10px 25px -5px rgba(139, 92, 246, 0.2)" }}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
