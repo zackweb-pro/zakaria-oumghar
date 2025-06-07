@@ -74,13 +74,31 @@ export function useThrottledScroll(options = {}, throttleMs = 100) {
 
 /**
  * A simpler in-view detection hook that uses Framer Motion's native implementation
+ * with optimized threshold values for earlier triggering of animations
  * @param {Object} ref - React ref object
  * @param {Object} options - Options for useInView
  * @returns {boolean} - Whether the element is in view
  */
 export function useThrottledInView(ref, options = {}) {
-  // Just use the original useInView hook directly
-  // The native implementation is already optimized and doesn't need throttling
-  // Attempting to throttle it was causing compatibility issues
-  return framerUseInView(ref, options);
+  // Use smaller threshold and negative margin for earlier animation triggering
+  const optimizedOptions = {
+    ...options,
+    // If amount is not explicitly provided, default to a small value (0.05)
+    amount: options.amount !== undefined ? Math.min(options.amount, 0.05) : 0.05,
+    // Add margin to trigger animations before elements enter viewport
+    margin: options.margin || "0px 0px -100px 0px"
+  };
+  
+  // Use Framer Motion's native implementation
+  return framerUseInView(ref, optimizedOptions);
 }
+
+/**
+ * Standard viewport configuration for optimized motion animations
+ * Creates a consistent configuration for whileInView animations across the site
+ */
+export const optimizedViewport = {
+  once: false,
+  margin: "0px 0px -150px 0px", // Trigger animations earlier 
+  amount: 0.05 // Only need a small portion of the element to be visible
+};

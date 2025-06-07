@@ -7,30 +7,28 @@ import {
   FiDatabase, FiGlobe, FiMonitor,
   FiCoffee, FiLayers, FiZap, FiCloud
 } from 'react-icons/fi';
-import { useThrottledInView } from '../utils/animationUtils';
+import { useThrottledInView, optimizedViewport } from '../utils/animationUtils';
 
 const SkillsSection = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
-  const isInView = useThrottledInView(ref, { once: false, amount: 0.2 }, 120);
-
+  const isInView = useThrottledInView(ref, { once: false });
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.08,
+        delayChildren: 0.05,
       },
     },
   };
-
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 15, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5, ease: [0.6, 0.05, 0.01, 0.9] },
+      transition: { duration: 0.4, ease: "easeOut" },
     },
   };
 
@@ -157,10 +155,9 @@ const SkillsSection = () => {
     return (
       <motion.div
         variants={itemVariants}
-        className="group relative overflow-hidden rounded-xl"
-        initial="hidden"
+        className="group relative overflow-hidden rounded-xl"        initial="hidden"
         whileInView="visible"
-        viewport={{ once: true }}
+        viewport={optimizedViewport}
       >
         {/* Card Background with smooth gradient */}
         <motion.div 
@@ -229,7 +226,7 @@ const SkillsSection = () => {
                   x: 0,
                   transition: { delay: 0.1 * skillIndex, duration: 0.4 }
                 }}
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={optimizedViewport}
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
@@ -292,10 +289,9 @@ const SkillsSection = () => {
             style={{ 
               background: `linear-gradient(to right, ${category.gradientStart}, ${category.gradientEnd})`,
               transformOrigin: 'left'
-            }}
-            initial={{ scaleX: 0 }}
+            }}            initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
+            viewport={optimizedViewport}
             transition={{ duration: 0.8, delay: 0.2 }}
           />
         </motion.div>

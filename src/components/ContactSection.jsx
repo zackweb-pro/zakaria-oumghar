@@ -8,14 +8,14 @@ import {
   FaInstagram 
 } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
-import { useThrottledInView } from '../utils/animationUtils';
+import { useThrottledInView, optimizedViewport } from '../utils/animationUtils';
 
 const ContactSection = () => {
   const { t } = useTranslation();
   const ref = useRef(null);
   const formRef = useRef(null);
   const mousePosRef = useRef({ x: 0, y: 0 });
-  const isInView = useThrottledInView(ref, { once: false, amount: 0.2 }, 150);
+  const isInView = useThrottledInView(ref, { once: false });
   const [formStatus, setFormStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeFocus, setActiveFocus] = useState(null);
@@ -37,24 +37,22 @@ const ContactSection = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3,
+        staggerChildren: 0.1,
+        delayChildren: 0.05,
       },
     },
   };
-
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 15, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] },
+      transition: { duration: 0.4, ease: "easeOut" },
     },
   };
 

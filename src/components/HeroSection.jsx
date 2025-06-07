@@ -143,54 +143,48 @@ const HeroSection = () => {
           initial="hidden"
           animate="visible"
           className="order-2 md:order-1"
-        >
-          <motion.div 
+        >          <motion.div 
             className="inline-block relative mb-2"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
           >
             <motion.span 
               className="text-lg md:text-xl text-primary-500 dark:text-primary-400 font-medium"
             >
               {t('hero.greeting')}
-            </motion.span>
-            <motion.div 
+            </motion.span>            <motion.div 
               className="absolute -bottom-1 left-0 h-1 bg-primary-500 dark:bg-primary-400 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: '100%' }}
-              transition={{ delay: 0.8, duration: 0.8 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
             />
           </motion.div>          <motion.h1 
             className="text-4xl md:text-6xl font-display font-bold mb-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
             {/* Replaced individual letter animations with 2 word groups for better performance */}
             <motion.span 
-              className="inline-block"
-              initial={{ opacity: 0, y: 20 }}
+              className="inline-block"              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
             >
               Zakaria{' '}
             </motion.span>
             <motion.span 
-              className="inline-block"
-              initial={{ opacity: 0, y: 20 }}
+              className="inline-block"              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
             >
               Oumghar
             </motion.span>
-          </motion.h1>
-
-          <motion.div
+          </motion.h1>          <motion.div
             className="relative"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
+            transition={{ duration: 0.4, delay: 0.25 }}
           >
             <motion.h2 
               className="text-2xl md:text-3xl font-display font-bold mb-6 relative inline-block"

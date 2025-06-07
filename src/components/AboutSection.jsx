@@ -2,13 +2,12 @@ import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiCode, FiAward, FiCalendar, FiMapPin, FiBriefcase } from 'react-icons/fi';
-import { useThrottledInView, throttle } from '../utils/animationUtils';
+import { useThrottledInView, throttle, optimizedViewport } from '../utils/animationUtils';
 
 const AboutSection = () => {  const { t } = useTranslation();
   const ref = useRef(null);
-  const sectionRef = useRef(null);
-  // Using throttled in-view detection (100ms throttle)
-  const isInView = useThrottledInView(ref, { once: false, amount: 0.3 }, 100);
+  const sectionRef = useRef(null);  // Using throttled in-view detection
+  const isInView = useThrottledInView(ref, { once: false });
   const imageRef = useRef(null);
   
   // For scroll-based effects, let's use a simplified approach without dependencies
@@ -39,24 +38,49 @@ const AboutSection = () => {  const { t } = useTranslation();
     handleScroll(); // Initialize on mount
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  // Animation variants for staggered children animations
+  }, []);  // Animation variants for staggered children animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 }, // Reduced delay and stagger time
     },
   };
-
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6, ease: [0.6, 0.05, 0.01, 0.9] },
+      transition: { duration: 0.4, ease: "easeOut" },
     },
   };
+
+  // Update all viewport settings to use optimizedViewport configuration
+  const updateViewportSettings = () => {
+    // All timeline connectors
+    document.querySelectorAll('.timeline-connector').forEach(el => {
+      el.setAttribute('data-viewport', JSON.stringify(optimizedViewport));
+      el.setAttribute('data-duration', '1');
+    });
+    
+    // All experience and education items
+    document.querySelectorAll('.timeline-item').forEach((el, index) => {
+      el.setAttribute('data-viewport', JSON.stringify(optimizedViewport));
+      el.setAttribute('data-delay', String(0.08 * index));
+      el.setAttribute('data-duration', '0.4');
+    });
+      // All interest items
+    document.querySelectorAll('.interest-item').forEach((el) => {
+      el.setAttribute('data-viewport', JSON.stringify(optimizedViewport));
+    });
+  };
+  
+  // Call the function on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      updateViewportSettings();
+    }
+  }, []);
 
   const education = Array.isArray(t('about.educationList', { returnObjects: true })) ? t('about.educationList', { returnObjects: true }) : [];
   const interests = Array.isArray(t('about.interestsList', { returnObjects: true })) ? t('about.interestsList', { returnObjects: true }) : [];
@@ -198,7 +222,7 @@ const AboutSection = () => {  const { t } = useTranslation();
                 
                 {/* Timeline connector */}
                 <motion.div 
-                  className="absolute left-0 top-10 bottom-20 w-[2px] bg-gradient-to-b from-primary-500 via-primary-300 to-transparent"
+                  className="absolute left-0 top-10 bottom-20 w-[2px] bg-gradient-to-b from-primary-500 via-primary-300 to-transparent timeline-connector"
                   initial={{ height: 0, opacity: 0 }}
                   whileInView={{ height: "100%", opacity: 1 }}
                   viewport={{ once: true }}
@@ -214,7 +238,7 @@ const AboutSection = () => {  const { t } = useTranslation();
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, margin: "-100px" }}
                       transition={{ duration: 0.7, delay: index * 0.2 }}
-                      className="relative"
+                      className="relative timeline-item"
                     >
                       {/* Timeline node */}
                       <motion.div 
@@ -312,7 +336,7 @@ const AboutSection = () => {  const { t } = useTranslation();
                 
                 {/* Timeline connector */}
                 <motion.div 
-                  className="absolute left-0 top-10 bottom-20 w-[2px] bg-gradient-to-b from-primary-500 via-primary-300 to-transparent"
+                  className="absolute left-0 top-10 bottom-20 w-[2px] bg-gradient-to-b from-primary-500 via-primary-300 to-transparent timeline-connector"
                   initial={{ height: 0, opacity: 0 }}
                   whileInView={{ height: "100%", opacity: 1 }}
                   viewport={{ once: true }}
@@ -328,7 +352,7 @@ const AboutSection = () => {  const { t } = useTranslation();
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true, margin: "-100px" }}
                       transition={{ duration: 0.7, delay: index * 0.2 }}
-                      className="relative"
+                      className="relative timeline-item"
                     >
                       {/* Timeline node - consistent for all cards */}
                       <motion.div 
@@ -410,7 +434,7 @@ const AboutSection = () => {  const { t } = useTranslation();
                   {interests.map((interest, index) => (
                     <motion.div 
                       key={index} 
-                      className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-full text-sm shadow-md backdrop-blur-sm relative overflow-hidden group"
+                      className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-full text-sm shadow-md backdrop-blur-sm relative overflow-hidden group interest-item"
                       variants={{
                         hidden: { opacity: 0, y: 20 },
                         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }

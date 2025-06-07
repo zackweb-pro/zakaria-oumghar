@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiGithub, FiCode, FiArrowRight } from 'react-icons/fi';
-import { useThrottledInView } from '../utils/animationUtils';
+import { useThrottledInView, optimizedViewport } from '../utils/animationUtils';
 import somap_image from '../assets/dashboardsomap.png';
 import searchstage from '../assets/searchstage.jpeg';
 import chatbot_ensias from '../assets/chatbot_ensias.png';
@@ -11,26 +11,24 @@ import dep_manage from '../assets/dep_manage.png';
 
 const ProjectsSection = () => {  const { t } = useTranslation();
   const ref = useRef(null);
-  const isInView = useThrottledInView(ref, { once: false, amount: 0.1 }, 120);
+  const isInView = useThrottledInView(ref, { once: false });
   const [activeIndex, setActiveIndex] = useState(null);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
+        staggerChildren: 0.12,
+        delayChildren: 0.08,
       },
     },
   };
-
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6, ease: [0.6, 0.05, 0.01, 0.9] },
+      transition: { duration: 0.4, ease: "easeOut" },
     },
   };
 
@@ -182,11 +180,10 @@ const ProjectsSection = () => {  const { t } = useTranslation();
         >
           {/* Enhanced section title */}
           <motion.div variants={itemVariants} className="text-center relative mb-14">
-            <motion.span 
-              initial={{ opacity: 0, y: -10 }}
+            <motion.span              initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              viewport={optimizedViewport}
               className="text-sm text-primary-500 font-medium block mb-2"
             >
               {t('projects.showcase', 'SHOWCASE')}
@@ -195,11 +192,10 @@ const ProjectsSection = () => {  const { t } = useTranslation();
             <motion.h2 className="text-3xl md:text-4xl font-display font-bold inline-block relative">
               {t('projects.title')}
               <motion.div 
-                className="absolute -bottom-3 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-400 rounded-full"
-                initial={{ width: 0 }}
+                className="absolute -bottom-3 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-400 rounded-full"                initial={{ width: 0 }}
                 whileInView={{ width: '100%' }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5, duration: 0.8 }}
+                viewport={optimizedViewport}
+                transition={{ delay: 0.2, duration: 0.5 }}
               />
             </motion.h2>
           </motion.div>
@@ -219,11 +215,10 @@ const ProjectsSection = () => {  const { t } = useTranslation();
                   className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r z-10"
                   style={{ 
                     backgroundImage: `linear-gradient(to right, ${project.accent}, ${project.accent}88)` 
-                  }}
-                  initial={{ scaleX: 0, originX: 0 }}
+                  }}                  initial={{ scaleX: 0, originX: 0 }}
                   whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  viewport={optimizedViewport}
+                  transition={{ duration: 0.6, delay: index * 0.08 }}
                 />
                 
                 {/* Card inner glow effect on hover */}
@@ -247,10 +242,9 @@ const ProjectsSection = () => {  const { t } = useTranslation();
                   {/* Project primary language badge */}
                   <motion.div
                     className="absolute top-3 right-3 z-20 bg-black/50 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full flex items-center gap-1.5"
-                    initial={{ y: -20, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
+                    initial={{ y: -20, opacity: 0 }}                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={optimizedViewport}
+                    transition={{ delay: 0.15 + index * 0.08 }}
                   >
                     <FiCode className="text-primary-300" />
                     <span>{project.tags[0]}</span>
@@ -324,15 +318,14 @@ const ProjectsSection = () => {  const { t } = useTranslation();
                           initial={{ opacity: 0, scale: 0.8 }}
                           whileInView={{ 
                             opacity: 1, 
-                            scale: 1,
-                            transition: { 
-                              delay: 0.3 + (index * 0.05) + (tagIndex * 0.05),
+                            scale: 1,                            transition: { 
+                              delay: 0.15 + (index * 0.05) + (tagIndex * 0.03),
                               type: 'spring',
                               stiffness: 300,
                               damping: 20
                             }
                           }}
-                          viewport={{ once: true }}
+                          viewport={optimizedViewport}
                         >
                           {/* Background glow effect on hover */}
                           <motion.div
@@ -389,11 +382,10 @@ const ProjectsSection = () => {  const { t } = useTranslation();
                       {project.tags.length > 4 && (
                         <motion.div
                           className="relative group/more"
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
+                          initial={{ opacity: 0, scale: 0.8 }}                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={optimizedViewport}
                           transition={{ 
-                            delay: 0.3 + (index * 0.05) + (4 * 0.05),
+                            delay: 0.15 + (index * 0.05) + (4 * 0.03),
                             type: 'spring',
                             stiffness: 300,
                             damping: 20
