@@ -134,7 +134,7 @@ const ContactSection = () => {
         <div className="absolute bottom-1/4 -right-16 w-64 h-64 rounded-full bg-gradient-to-r from-blue-500/20 to-green-500/20 dark:from-blue-500/10 dark:to-green-500/10 blur-3xl"></div>
         
         {/* Grid pattern */}
-        <div className="absolute inset-0" 
+        {/* <div className="absolute inset-0" 
           style={{
             backgroundImage: `
               linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px), 
@@ -142,7 +142,7 @@ const ContactSection = () => {
             `,
             backgroundSize: '40px 40px'
           }}
-        />
+        /> */}
         
         {/* Decorative dots */}
         <div className="absolute left-1/4 top-20 w-40 h-40 opacity-20">

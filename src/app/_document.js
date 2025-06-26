@@ -1,21 +1,10 @@
-import { Inter } from 'next/font/google';
-import ClientLayout from './ClientLayout';
-import '../index.css';
+import { Html, Head, Main, NextScript } from 'next/document'
 
-const inter = Inter({ subsets: ['latin'] });
-
-export const metadata = {
-  title: 'Zakaria Oumghar - Portfolio',
-  description: 'Portfolio of Zakaria Oumghar - Full Stack Developer',
-};
-
-export default function RootLayout({ children }) {
+export default function Document() {
   return (
-    <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon/favicon.ico" />
-        
-        {/* Critical resource preloads for LCP optimization */}
+    <Html lang="en">
+      <Head>
+        {/* Preload critical resources */}
         <link rel="preload" href="/assets/portfolio-image.jpeg" as="image" fetchPriority="high" />
         
         {/* DNS prefetch for external resources */}
@@ -28,12 +17,19 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="preconnect" href="https://api.fontshare.com" />
         <link rel="preconnect" href="https://images.unsplash.com" />
-      </head>
-      <body className={inter.className}>
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        
+        {/* Critical CSS inlining hint */}
+        <style>{`
+          /* Critical CSS for LCP optimization */
+          .hero-container { contain: layout style paint; }
+          .profile-image { contain: layout; }
+          img[priority] { content-visibility: auto; }
+        `}</style>
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
       </body>
-    </html>
-  );
+    </Html>
+  )
 }

@@ -84,51 +84,8 @@ const ProjectsSection = () => {  const { t } = useTranslation();
 
   return (
     <section id="projects" className="section-padding bg-gray-50 dark:bg-dark-200 relative overflow-hidden">
-      {/* Optimized background particles with reduced count */}
-      <div className="absolute inset-0 opacity-25 dark:opacity-30 overflow-hidden">
-        {/* Reduced particle count from 20 to 8 */}
-        {[...Array(8)].map((_, i) => {
-          // Fixed positions in a grid pattern for better performance
-          const positionMap = [
-            {x: 15, y: 20}, {x: 45, y: 25}, {x: 75, y: 15}, {x: 85, y: 45},
-            {x: 25, y: 65}, {x: 55, y: 70}, {x: 80, y: 85}, {x: 40, y: 90}
-          ];
-          
-          // Consistent sizes between 2-5px instead of random
-          const size = 2 + (i % 4);
-          
-          return (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
-              style={{
-                left: `${positionMap[i].x}%`,
-                top: `${positionMap[i].y}%`,
-                width: size,
-                height: size,
-                filter: "blur(0.5px)",
-                boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-              }}
-              animate={{
-                // Simplified movement patterns
-                x: [0, i % 2 === 0 ? 30 : -30], 
-                y: [0, i % 3 === 0 ? -25 : 25],
-                opacity: [0.2, 0.5, 0.2], // Reduced opacity range
-              }}
-              transition={{
-                // More efficient animation transitions
-                duration: 15 + (i * 2), // Between 15-29s
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "linear" // More efficient than easeInOut
-              }}
-            />
-          );
-        })}
-      </div>
-
       {/* Mesh gradient background like in Hero Section */}
-      <motion.div 
+      {/* <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: `
@@ -139,10 +96,10 @@ const ProjectsSection = () => {  const { t } = useTranslation();
           opacity: 0.15,
           backgroundSize: '200% 200%',
         }}
-      />
+      /> */}
 
       {/* Grid pattern like in Hero Section */}
-      <div className="absolute inset-0" 
+      {/* <div className="absolute inset-0" 
         style={{
           backgroundImage: `
             linear-gradient(to right, rgba(99, 102, 241, 0.07) 1px, transparent 1px), 
@@ -151,22 +108,8 @@ const ProjectsSection = () => {  const { t } = useTranslation();
           backgroundSize: '50px 50px',
           opacity: 0.5
         }}
-      />
+      /> */}
 
-      {/* Subtle texture overlay */}
-      <div 
-        className="absolute inset-0 opacity-5 dark:opacity-10 pointer-events-none mix-blend-overlay" 
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E")`,
-          backgroundSize: '8px 8px'
-        }}
-      />
-
-      {/* Keep your existing background elements after these new ones */}
-      {/* Subtle floating background elements */}
-      <div className="absolute top-40 left-20 w-72 h-72 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-40 right-20 w-96 h-96 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl"></div>
-      
       <div className="container mx-auto px-4">
         <motion.div
           ref={ref}
