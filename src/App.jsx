@@ -7,6 +7,7 @@ import 'locomotive-scroll/dist/locomotive-scroll.css';
 // Components
 // import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
+import Chatbot from './components/Chatbot';
 // Only HeroSection loads immediately
 import HeroSection from './components/HeroSection';
 
@@ -58,6 +59,7 @@ function App() {
     <div className="App">
       {/* <CustomCursor /> */}
       <Navbar />
+      <Chatbot />
 
       <motion.div
         ref={scrollRef}
