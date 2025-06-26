@@ -156,7 +156,7 @@ const HeroSection = () => {
 
             {/* Projects Button */}
             <motion.a
-              href="#projects"
+              href="/projects"
               className="group relative overflow-hidden border-2 border-gray-300 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-400 px-6 py-3 rounded-full text-gray-800 dark:text-gray-200 font-medium transition-colors duration-300"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
