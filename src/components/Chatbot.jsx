@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMessageCircle, FiX, FiSend, FiUser, FiMessageCircle as FiBot } from 'react-icons/fi';
+import { BsRobot as FiBot } from "react-icons/bs";
+import { FiMessageCircle, FiX, FiSend, FiUser} from 'react-icons/fi';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -143,10 +144,26 @@ Please answer questions about Zakaria professionally and accurately based on thi
 
   return (
     <>
+      {/* CSS Custom Properties for Dark Mode */}
+      <style jsx>{`
+        :global(:root) {
+          --chatbot-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%);
+          --chatbot-border: rgba(255, 255, 255, 0.1);
+        }
+        :global(.dark) {
+          --chatbot-bg: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.95) 100%);
+          --chatbot-border: rgba(255, 255, 255, 0.05);
+        }
+      `}</style>
+
       {/* Floating Chatbot Button */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 ${isOpen ? 'hidden' : 'block'}`}
+        className={`fixed bottom-6 right-6 z-50 p-4 bg-gradient-to-br from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${isOpen ? 'hidden' : 'block'}`}
+        style={{
+          background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%)',
+          boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) inset'
+        }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         initial={{ scale: 0 }}
@@ -164,24 +181,46 @@ Please answer questions about Zakaria professionally and accurately based on thi
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="fixed bottom-6 right-6 z-50 w-96 h-96 bg-white dark:bg-dark-300 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 w-96 h-96 rounded-lg shadow-2xl border border-gray-200/50 dark:border-gray-700/50 flex flex-col overflow-hidden backdrop-blur-md"
+            style={{
+              background: 'var(--chatbot-bg)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--chatbot-border) inset'
+            }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-blue-600 text-white">
-              <div className="flex items-center space-x-2">
-                <FiBot size={20} />
+            <div className="flex items-center justify-between p-4 border-b border-white/20 text-white relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%)',
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              {/* Header gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-transparent to-purple-600/20 pointer-events-none"></div>
+              
+              <div className="flex items-center space-x-2 relative z-10">
+                <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
+                  <FiBot size={20} />
+                </div>
                 <h3 className="font-semibold">Ask about Zakaria</h3>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-blue-700 rounded transition-colors"
+                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors relative z-10 backdrop-blur-sm"
               >
                 <FiX size={18} />
               </button>
             </div>
 
             {/* Messages Container */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 relative bg-gray-50/80 dark:bg-dark-200/80">
+              {/* Subtle pattern overlay */}
+              <div className="absolute inset-0 opacity-5 pointer-events-none"
+                style={{
+                  backgroundImage: `radial-gradient(circle at 25% 25%, #3b82f6 0%, transparent 50%),
+                                   radial-gradient(circle at 75% 75%, #8b5cf6 0%, transparent 50%)`
+                }}
+              ></div>
               {messages.map((message, index) => (
                 <motion.div
                   key={index}
@@ -191,10 +230,18 @@ Please answer questions about Zakaria professionally and accurately based on thi
                   className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div className={`flex items-start space-x-2 max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                    <div className={`p-2 rounded-full ${message.type === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200'}`}>
+                    <div className={`p-2 rounded-full ${
+                      message.type === 'user' 
+                        ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-lg' 
+                        : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 text-gray-700 dark:text-gray-200 shadow-md'
+                    }`}>
                       {message.type === 'user' ? <FiUser size={14} /> : <FiBot size={14} />}
                     </div>
-                    <div className={`p-3 rounded-lg ${message.type === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}`}>
+                    <div className={`p-3 rounded-lg shadow-sm ${
+                      message.type === 'user' 
+                        ? 'bg-gradient-to-br from-primary-500 to-primary-600 text-white' 
+                        : 'bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-600'
+                    }`}>
                       <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                     </div>
                   </div>
@@ -209,14 +256,14 @@ Please answer questions about Zakaria professionally and accurately based on thi
                   className="flex justify-start"
                 >
                   <div className="flex items-start space-x-2">
-                    <div className="p-2 rounded-full bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200">
+                    <div className="p-2 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-600 dark:to-gray-700 text-gray-700 dark:text-gray-200 shadow-md">
                       <FiBot size={14} />
                     </div>
-                    <div className="p-3 rounded-lg bg-gray-100 dark:bg-gray-700">
+                    <div className="p-3 rounded-lg bg-gradient-to-br from-white to-gray-50 dark:from-gray-700 dark:to-gray-800 border border-gray-100 dark:border-gray-600 shadow-sm">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-primary-400 to-primary-500 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-primary-500 to-primary-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-primary-600 to-primary-700 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       </div>
                     </div>
                   </div>
@@ -226,7 +273,7 @@ Please answer questions about Zakaria professionally and accurately based on thi
             </div>
 
             {/* Input Area */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="p-4 border-t border-white/20 dark:border-gray-600/30 bg-white/90 dark:bg-dark-100/90 backdrop-blur-md">
               <div className="flex space-x-2">
                 <input
                   type="text"
@@ -234,13 +281,18 @@ Please answer questions about Zakaria professionally and accurately based on thi
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask about Zakaria's skills, projects, etc..."
-                  className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-dark-400 text-gray-900 dark:text-gray-100 text-sm"
+                  className="flex-1 p-3 border border-gray-200/50 dark:border-gray-600/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 bg-white/90 dark:bg-dark-300/90 text-gray-900 dark:text-gray-100 text-sm backdrop-blur-sm shadow-sm placeholder-gray-400 dark:placeholder-gray-500"
                   disabled={isLoading}
                 />
                 <button
                   onClick={sendMessage}
                   disabled={!inputValue.trim() || isLoading}
-                  className="p-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg transition-colors"
+                  className="p-3 text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl disabled:shadow-md"
+                  style={{
+                    background: !inputValue.trim() || isLoading 
+                      ? 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)' 
+                      : 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
+                  }}
                 >
                   <FiSend size={16} />
                 </button>
