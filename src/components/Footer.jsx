@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiArrowUp } from 'react-icons/fi';
@@ -105,8 +107,8 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col items-center md:items-end">
-            <motion.a
-              href="#home"
+            <motion.button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="p-3 bg-white dark:bg-dark-100 rounded-full shadow-md mb-4 hover:shadow-lg transition-shadow duration-300 relative group"
               whileHover={{ y: -5 }}
               whileTap={{ scale: 0.9 }}
@@ -118,7 +120,7 @@ const Footer = () => {
                 whileHover={{ scale: 1.5, opacity: 1 }}
                 transition={{ duration: 0.4 }}
               />
-            </motion.a>
+            </motion.button>
             <p className="text-gray-600 dark:text-gray-300 text-sm">
               &copy; {currentYear} Zakaria Oumghar. {t('footer.rights')}
             </p>

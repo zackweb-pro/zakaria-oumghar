@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +10,7 @@ import {
   FaInstagram 
 } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
-import { useThrottledInView, optimizedViewport } from '../utils/animationUtils';
+import { useThrottledInView } from '../utils/animationUtils';
 
 const ContactSection = () => {
   const { t } = useTranslation();

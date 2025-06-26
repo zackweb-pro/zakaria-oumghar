@@ -1,13 +1,10 @@
+'use client';
+
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiGithub, FiCode, FiArrowRight } from 'react-icons/fi';
-import { useThrottledInView, optimizedViewport } from '../utils/animationUtils';
-import somap_image from '../assets/dashboardsomap.png';
-import searchstage from '../assets/searchstage.jpeg';
-import chatbot_ensias from '../assets/chatbot_ensias.png';
-import formsaver_pro from '../assets/FormSaver Pro.png';
-import dep_manage from '../assets/dep_manage.png'; 
+import { useThrottledInView, optimizedViewport } from '../utils/animationUtils'; 
 
 const ProjectsSection = () => {  const { t } = useTranslation();
   const ref = useRef(null);
@@ -36,7 +33,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'Management of department in ENSIAS',
       description: 'A web application for managing the departments of ENSIAS and displaying them in a more esthitique astonishing way.',
-      image: dep_manage,
+      image: '/assets/dep_manage.png',
       tags: ['Spring Boot', 'React.js', "microservices", "docker", "github actions", 'Postgresql', 'Tailwind CSS', 'Framer Motion', 'Node.js', 'Express'],
       github: 'https://github.com/zackweb-pro/department-management-ensias',
       demo: '#',
@@ -46,7 +43,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'Management of Employee Records and Purchase Requests',
       description: 'A web application for managing employee records and purchase requests, with admin and responsable roles, built during internship.',
-      image: somap_image,
+      image: '/assets/dashboardsomap.png',
       tags: ['React.js', 'Tailwind CSS', 'Framer Motion', 'MySQL', 'Node.js', 'Express'],
       github: 'https://github.com/zackweb-pro/my-internship-project-1A',
       demo: '#',
@@ -56,7 +53,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'Student Interface for Internship Applications',
       description: 'A platform connecting students with recruiters for internship applications, using Oracle DB on OCI, React, and Node.js.',
-      image: searchstage,
+      image: '/assets/searchstage.jpeg',
       tags: ['React.js', 'Node.js', 'Oracle DB', 'OCI', 'Express'],
       github: 'https://github.com/zackweb-pro/SI_Interface',
       demo: '#',
@@ -66,7 +63,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'ENSIAS Chatbot',
       description: 'A chatbot web application for ENSIAS information retrieval, built with Python, Flask, NeuralIntents, and frontend technologies.',
-      image: chatbot_ensias,
+      image: '/assets/chatbot_ensias.png',
       tags: ['Python', 'Flask', 'NeuralIntents', 'HTML', 'CSS', 'JavaScript'],
       github: 'https://github.com/zackweb-pro/PFA-FULL-EDITION',
       demo: '#',
@@ -76,7 +73,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'Form Saver Pro',
       description: 'A Chrome extension that stores user inputs so they persist even after a page reload.',
-      image: formsaver_pro,
+      image: '/assets/FormSaver Pro.png',
       tags: ['JavaScript', 'Chrome Extension', 'Local Storage', 'HTML', 'CSS'],
       github: 'https://github.com/zackweb-pro/No-ReFill',
       demo: '#',

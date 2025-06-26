@@ -1,8 +1,9 @@
+'use client';
+
 import { useRef, useEffect, useState } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiDownload, FiArrowDown, FiCode, FiEye } from 'react-icons/fi';
-import profile from "../assets/portfolio-image.jpeg";
 import { throttle } from '../utils/animationUtils';
 
 const HeroSection = () => {
@@ -336,7 +337,7 @@ const HeroSection = () => {
               <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-dark-200 p-2">
                 <div className="w-full h-full rounded-full overflow-hidden relative">
                   <img
-                    src={profile}
+                    src="/assets/portfolio-image.jpeg"
                     alt="Zakaria Oumghar"
                     loading='lazy'
                     className="w-full h-full object-cover object-center"

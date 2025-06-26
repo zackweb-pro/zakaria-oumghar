@@ -1,7 +1,11 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import LanguageSwitcher from './LanguageSwitcher';
 import VisitorCounter from './VisitorCounter';
 
@@ -10,6 +14,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,11 +54,11 @@ const Navbar = () => {
 
   // Rebuild nav links when language changes
   const navLinks = [
-    { name: t('nav.home'), href: '#home' },
-    { name: t('nav.about'), href: '#about' },
-    { name: t('nav.skills'), href: '#skills' },
-    { name: t('nav.projects'), href: '#projects' },
-    { name: t('nav.contact'), href: '#contact' },
+    { name: t('nav.home'), href: '/' },
+    { name: t('nav.about'), href: '/about' },
+    { name: t('nav.skills'), href: '/skills' },
+    { name: t('nav.projects'), href: '/projects' },
+    { name: t('nav.contact'), href: '/contact' },
   ];
 
   const navVariants = {
@@ -98,16 +103,21 @@ const Navbar = () => {
           animate="visible"
         >
           {navLinks.map((link) => (
-            <motion.a
+            <motion.div
               key={link.name}
-              href={link.href}
-              className="nav-link text-base font-medium hover-trigger"
               variants={itemVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {link.name}
-            </motion.a>
+              <Link
+                href={link.href}
+                className={`nav-link text-base font-medium hover-trigger ${
+                  pathname === link.href ? 'text-blue-600 dark:text-blue-400' : ''
+                }`}
+              >
+                {link.name}
+              </Link>
+            </motion.div>
           ))}
           
           <motion.div variants={itemVariants} className="flex items-center space-x-4">
@@ -173,18 +183,23 @@ const Navbar = () => {
                   }
                 }}
               >                {navLinks.map((link) => (
-                  <motion.a
+                  <motion.div
                     key={link.name}
-                    href={link.href}
-                    className="nav-link text-base font-medium py-2 border-b border-gray-100 dark:border-gray-700/30 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
-                    onClick={() => setIsOpen(false)}
                     variants={{
                       hidden: { opacity: 0, x: -20 },
                       visible: { opacity: 1, x: 0 }
                     }}
                   >
-                    {link.name}
-                  </motion.a>
+                    <Link
+                      href={link.href}
+                      className={`nav-link text-base font-medium py-2 border-b border-gray-100 dark:border-gray-700/30 hover:text-primary-500 dark:hover:text-primary-400 transition-colors block ${
+                        pathname === link.href ? 'text-blue-600 dark:text-blue-400' : ''
+                      }`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
                 ))}
               </motion.div>
             </motion.div>
