@@ -144,18 +144,6 @@ Please answer questions about Zakaria professionally and accurately based on thi
 
   return (
     <>
-      {/* CSS Custom Properties for Dark Mode */}
-      <style jsx>{`
-        :global(:root) {
-          --chatbot-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%);
-          --chatbot-border: rgba(255, 255, 255, 0.1);
-        }
-        :global(.dark) {
-          --chatbot-bg: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.95) 100%);
-          --chatbot-border: rgba(255, 255, 255, 0.05);
-        }
-      `}</style>
-
       {/* Floating Chatbot Button */}
       <motion.button
         onClick={() => setIsOpen(true)}
@@ -181,11 +169,10 @@ Please answer questions about Zakaria professionally and accurately based on thi
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="fixed bottom-6 right-6 z-50 w-96 h-96 rounded-lg shadow-2xl border border-gray-200/50 dark:border-gray-700/50 flex flex-col overflow-hidden backdrop-blur-md"
+            className="fixed bottom-6 right-6 z-50 w-96 h-96 rounded-lg shadow-2xl border border-gray-200/50 dark:border-gray-700/50 flex flex-col overflow-hidden backdrop-blur-md bg-white/95 dark:bg-dark-100/95"
             style={{
-              background: 'var(--chatbot-bg)',
               backdropFilter: 'blur(20px)',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--chatbot-border) inset'
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1) inset'
             }}
           >
             {/* Header */}

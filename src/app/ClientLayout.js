@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Chatbot from '../components/Chatbot';
 import '../i18n.js';
