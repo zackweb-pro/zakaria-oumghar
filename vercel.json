@@ -1,16 +1,8 @@
 {
-  "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "out",
-  "framework": "nextjs",
   "trailingSlash": false,
   "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/api/visitors.json",
-      "destination": "/api/visitors.json"
-    }
-  ],
   "headers": [
     {
       "source": "/assets/(.*)",
