@@ -12,7 +12,7 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const GEMINI_API_KEY = "AIzaSyBGdwJvYShWIAwiieLiVholWqNayzbbeiM";
+  const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "AIzaSyBGdwJvYShWIAwiieLiVholWqNayzbbeiM";
   const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   // Portfolio context for the AI
