@@ -1,4 +1,6 @@
 import { Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import ClientLayout from './ClientLayout';
 import '../index.css';
 
@@ -6,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Zakaria Oumghar - Portfolio',
-  description: 'Portfolio of Zakaria Oumghar - Full Stack Developer',
+  description: 'Portfolio of Zakaria Oumghar - Software Engineer - Full Stack Developer MERN & SPRING BOOT - Extensions Developer',
 };
 
 export default function RootLayout({ children }) {
@@ -33,6 +35,8 @@ export default function RootLayout({ children }) {
         <ClientLayout>
           {children}
         </ClientLayout>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
