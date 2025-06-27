@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { FiDownload, FiArrowDown, FiCode, FiEye } from 'react-icons/fi';
+import { FiDownload, FiCode, FiEye } from 'react-icons/fi';
 
 const HeroSection = () => {
   const { t } = useTranslation();
