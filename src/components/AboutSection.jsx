@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -95,85 +97,6 @@ const AboutSection = () => {  const { t } = useTranslation();
       {/* Background decorative elements */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-primary-100 dark:bg-primary-900/20 rounded-full blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-20 right-0 w-96 h-96 bg-primary-100 dark:bg-primary-900/20 rounded-full blur-3xl opacity-30 translate-x-1/3"></div>
-      
-      {/* Decorative orbiting circles */}
-      <div className="hidden lg:block absolute left-10 top-1/3 w-8 h-8 rounded-full bg-primary-500/10 dark:bg-primary-400/10" style={{ animation: 'orbit 15s infinite linear' }}></div>
-      <div className="hidden lg:block absolute right-10 top-1/4 w-4 h-4 rounded-full bg-primary-500/10 dark:bg-primary-400/10" style={{ animation: 'orbit 12s infinite linear reverse' }}></div>
-
-      {/* Optimized background particles with reduced count and complexity */}
-      <div className="absolute inset-0 opacity-25 dark:opacity-30 overflow-hidden">
-        {[...Array(12)].map((_, i) => {
-          // Use fixed positions based on index for better performance
-          const col = i % 4;
-          const row = Math.floor(i / 4);
-          const posX = (col * 25) + 5; // 4 columns, 25% spacing with 5% offset
-          const posY = (row * 33) + 5; // 3 rows, 33% spacing with 5% offset
-          
-          // Size and styles based on predictable patterns rather than random values
-          const size = 2 + (i % 5); // 2-6px size
-          
-          return (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
-              style={{
-                left: `${posX}%`,
-                top: `${posY}%`,
-                width: size,
-                height: size,
-                filter: "blur(0.5px)",
-                boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-              }}
-              animate={{
-                x: [0, i % 2 === 0 ? 30 : -30], // Alternating directions
-                y: [0, i % 3 === 0 ? 20 : -20], // Variation in movement
-                opacity: [0.2, 0.5, 0.2], // Reduced opacity range
-              }}
-              transition={{
-                duration: 12 + (i * 1.5), // Deterministic durations 12-30s
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "linear" // Linear easing is less CPU intensive
-              }}
-            />
-          );
-        })}
-      </div>
-
-      {/* Mesh gradient background like in Hero Section */}
-      <motion.div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.4) 0%, transparent 30%),
-            radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 30%),
-            radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.3) 0%, transparent 40%)
-          `,
-          opacity: 0.15,
-          backgroundSize: '200% 200%',
-        }}
-      />
-
-      {/* Grid pattern like in Hero Section */}
-      <div className="absolute inset-0" 
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(99, 102, 241, 0.07) 1px, transparent 1px), 
-            linear-gradient(to bottom, rgba(99, 102, 241, 0.07) 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px',
-          opacity: 0.5
-        }}
-      />
-
-      {/* Subtle texture overlay */}
-      <div 
-        className="absolute inset-0 opacity-5 dark:opacity-10 pointer-events-none mix-blend-overlay" 
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E")`,
-          backgroundSize: '8px 8px'
-        }}
-      />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -472,6 +395,9 @@ const AboutSection = () => {  const { t } = useTranslation();
                     alt="Coding"
                     loading="lazy"
                     className="w-full h-full object-cover"
+                    width="320"
+                    height="240"
+                    decoding="async"
                   />
                   
                   <motion.div 

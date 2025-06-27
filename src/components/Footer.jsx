@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiArrowUp } from 'react-icons/fi';
@@ -9,48 +11,6 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-50 dark:bg-dark-200 py-12 relative overflow-hidden">
-      {/* Minimalist animated particles for footer - further reduced and optimized */}
-      <div className="absolute inset-0 opacity-20 dark:opacity-25 overflow-hidden">
-        {/* Reduced particle count from 12 to 6 */}
-        {[...Array(6)].map((_, i) => {
-          // Fixed positions for better performance
-          const positions = [
-            {x: 20, y: 30}, {x: 50, y: 20}, {x: 80, y: 35},
-            {x: 25, y: 70}, {x: 60, y: 80}, {x: 85, y: 65}
-          ];
-          
-          // Fixed sizes for consistency
-          const size = 2 + (i % 3); // 2-4px
-          
-          return (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
-              style={{
-                left: `${positions[i].x}%`,
-                top: `${positions[i].y}%`,
-                width: size,
-                height: size,
-                filter: "blur(0.5px)",
-                boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-              }}
-              animate={{
-                // Limited movement range
-                x: [0, (i % 2 === 0) ? 20 : -20], 
-                y: [0, (i % 2 === 0) ? -15 : 15],
-                opacity: [0.2, 0.4, 0.2], // Reduced opacity range
-              }}
-              transition={{
-                duration: 15 + (i * 3), // Between 15-30s
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "linear" // More efficient than easeInOut
-              }}
-            />
-          );
-        })}
-      </div>
-
       {/* Subtle mesh gradient background */}
       <motion.div 
         className="absolute inset-0 pointer-events-none"
@@ -77,15 +37,6 @@ const Footer = () => {
         }}
       />
 
-      {/* Subtle texture overlay */}
-      <div 
-        className="absolute inset-0 opacity-5 dark:opacity-10 pointer-events-none mix-blend-overlay" 
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E")`,
-          backgroundSize: '8px 8px'
-        }}
-      />
-
       <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
@@ -105,8 +56,8 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col items-center md:items-end">
-            <motion.a
-              href="#home"
+            <motion.button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="p-3 bg-white dark:bg-dark-100 rounded-full shadow-md mb-4 hover:shadow-lg transition-shadow duration-300 relative group"
               whileHover={{ y: -5 }}
               whileTap={{ scale: 0.9 }}
@@ -118,7 +69,7 @@ const Footer = () => {
                 whileHover={{ scale: 1.5, opacity: 1 }}
                 transition={{ duration: 0.4 }}
               />
-            </motion.a>
+            </motion.button>
             <p className="text-gray-600 dark:text-gray-300 text-sm">
               &copy; {currentYear} Zakaria Oumghar. {t('footer.rights')}
             </p>

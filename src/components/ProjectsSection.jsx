@@ -1,13 +1,10 @@
+'use client';
+
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiGithub, FiCode, FiArrowRight } from 'react-icons/fi';
-import { useThrottledInView, optimizedViewport } from '../utils/animationUtils';
-import somap_image from '../assets/dashboardsomap.png';
-import searchstage from '../assets/searchstage.jpeg';
-import chatbot_ensias from '../assets/chatbot_ensias.png';
-import formsaver_pro from '../assets/FormSaver Pro.png';
-import dep_manage from '../assets/dep_manage.png'; 
+import { useThrottledInView, optimizedViewport } from '../utils/animationUtils'; 
 
 const ProjectsSection = () => {  const { t } = useTranslation();
   const ref = useRef(null);
@@ -36,7 +33,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'Management of department in ENSIAS',
       description: 'A web application for managing the departments of ENSIAS and displaying them in a more esthitique astonishing way.',
-      image: dep_manage,
+      image: '/assets/dep_manage.png',
       tags: ['Spring Boot', 'React.js', "microservices", "docker", "github actions", 'Postgresql', 'Tailwind CSS', 'Framer Motion', 'Node.js', 'Express'],
       github: 'https://github.com/zackweb-pro/department-management-ensias',
       demo: '#',
@@ -46,7 +43,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'Management of Employee Records and Purchase Requests',
       description: 'A web application for managing employee records and purchase requests, with admin and responsable roles, built during internship.',
-      image: somap_image,
+      image: '/assets/dashboardsomap.png',
       tags: ['React.js', 'Tailwind CSS', 'Framer Motion', 'MySQL', 'Node.js', 'Express'],
       github: 'https://github.com/zackweb-pro/my-internship-project-1A',
       demo: '#',
@@ -56,7 +53,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'Student Interface for Internship Applications',
       description: 'A platform connecting students with recruiters for internship applications, using Oracle DB on OCI, React, and Node.js.',
-      image: searchstage,
+      image: '/assets/searchstage.jpeg',
       tags: ['React.js', 'Node.js', 'Oracle DB', 'OCI', 'Express'],
       github: 'https://github.com/zackweb-pro/SI_Interface',
       demo: '#',
@@ -66,7 +63,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'ENSIAS Chatbot',
       description: 'A chatbot web application for ENSIAS information retrieval, built with Python, Flask, NeuralIntents, and frontend technologies.',
-      image: chatbot_ensias,
+      image: '/assets/chatbot_ensias.png',
       tags: ['Python', 'Flask', 'NeuralIntents', 'HTML', 'CSS', 'JavaScript'],
       github: 'https://github.com/zackweb-pro/PFA-FULL-EDITION',
       demo: '#',
@@ -76,7 +73,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
     {
       title: 'Form Saver Pro',
       description: 'A Chrome extension that stores user inputs so they persist even after a page reload.',
-      image: formsaver_pro,
+      image: '/assets/FormSaver Pro.png',
       tags: ['JavaScript', 'Chrome Extension', 'Local Storage', 'HTML', 'CSS'],
       github: 'https://github.com/zackweb-pro/No-ReFill',
       demo: '#',
@@ -87,51 +84,8 @@ const ProjectsSection = () => {  const { t } = useTranslation();
 
   return (
     <section id="projects" className="section-padding bg-gray-50 dark:bg-dark-200 relative overflow-hidden">
-      {/* Optimized background particles with reduced count */}
-      <div className="absolute inset-0 opacity-25 dark:opacity-30 overflow-hidden">
-        {/* Reduced particle count from 20 to 8 */}
-        {[...Array(8)].map((_, i) => {
-          // Fixed positions in a grid pattern for better performance
-          const positionMap = [
-            {x: 15, y: 20}, {x: 45, y: 25}, {x: 75, y: 15}, {x: 85, y: 45},
-            {x: 25, y: 65}, {x: 55, y: 70}, {x: 80, y: 85}, {x: 40, y: 90}
-          ];
-          
-          // Consistent sizes between 2-5px instead of random
-          const size = 2 + (i % 4);
-          
-          return (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500"
-              style={{
-                left: `${positionMap[i].x}%`,
-                top: `${positionMap[i].y}%`,
-                width: size,
-                height: size,
-                filter: "blur(0.5px)",
-                boxShadow: "0 0 8px 0 rgba(59, 130, 246, 0.3)"
-              }}
-              animate={{
-                // Simplified movement patterns
-                x: [0, i % 2 === 0 ? 30 : -30], 
-                y: [0, i % 3 === 0 ? -25 : 25],
-                opacity: [0.2, 0.5, 0.2], // Reduced opacity range
-              }}
-              transition={{
-                // More efficient animation transitions
-                duration: 15 + (i * 2), // Between 15-29s
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "linear" // More efficient than easeInOut
-              }}
-            />
-          );
-        })}
-      </div>
-
       {/* Mesh gradient background like in Hero Section */}
-      <motion.div 
+      {/* <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: `
@@ -142,10 +96,10 @@ const ProjectsSection = () => {  const { t } = useTranslation();
           opacity: 0.15,
           backgroundSize: '200% 200%',
         }}
-      />
+      /> */}
 
       {/* Grid pattern like in Hero Section */}
-      <div className="absolute inset-0" 
+      {/* <div className="absolute inset-0" 
         style={{
           backgroundImage: `
             linear-gradient(to right, rgba(99, 102, 241, 0.07) 1px, transparent 1px), 
@@ -154,22 +108,8 @@ const ProjectsSection = () => {  const { t } = useTranslation();
           backgroundSize: '50px 50px',
           opacity: 0.5
         }}
-      />
+      /> */}
 
-      {/* Subtle texture overlay */}
-      <div 
-        className="absolute inset-0 opacity-5 dark:opacity-10 pointer-events-none mix-blend-overlay" 
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E")`,
-          backgroundSize: '8px 8px'
-        }}
-      />
-
-      {/* Keep your existing background elements after these new ones */}
-      {/* Subtle floating background elements */}
-      <div className="absolute top-40 left-20 w-72 h-72 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-40 right-20 w-96 h-96 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl"></div>
-      
       <div className="container mx-auto px-4">
         <motion.div
           ref={ref}

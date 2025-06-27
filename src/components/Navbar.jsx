@@ -1,7 +1,11 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import LanguageSwitcher from './LanguageSwitcher';
 import VisitorCounter from './VisitorCounter';
 
@@ -10,6 +14,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,12 +54,19 @@ const Navbar = () => {
 
   // Rebuild nav links when language changes
   const navLinks = [
-    { name: t('nav.home'), href: '#home' },
-    { name: t('nav.about'), href: '#about' },
-    { name: t('nav.skills'), href: '#skills' },
-    { name: t('nav.projects'), href: '#projects' },
-    { name: t('nav.contact'), href: '#contact' },
+    { name: t('nav.home'), href: '/' },
+    { name: t('nav.about'), href: '/about/' },
+    { name: t('nav.skills'), href: '/skills/' },
+    { name: t('nav.projects'), href: '/projects/' },
+    { name: t('nav.contact'), href: '/contact/' },
   ];
+
+  // Function to check if a link is active
+  const isActiveLink = (href) => {
+    if (href === '/' && pathname === '/') return true;
+    if (href !== '/' && pathname === href) return true;
+    return false;
+  };
 
   const navVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -98,16 +110,33 @@ const Navbar = () => {
           animate="visible"
         >
           {navLinks.map((link) => (
-            <motion.a
+            <motion.div
               key={link.name}
-              href={link.href}
-              className="nav-link text-base font-medium hover-trigger"
               variants={itemVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              {link.name}
-            </motion.a>
+              <Link
+                href={link.href}
+                className={`nav-link text-base font-medium hover-trigger relative transition-colors duration-300 ${
+                  isActiveLink(link.href) 
+                    ? 'text-primary-600 dark:text-primary-400' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400'
+                }`}
+              >
+                {link.name}
+                {/* Active indicator */}
+                {isActiveLink(link.href) && (
+                  <motion.div
+                    className="absolute -bottom-0 left-0 right-0 h-0.5 bg-primary-500 rounded-full"
+                    layoutId="activeTab"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+              </Link>
+            </motion.div>
           ))}
           
           <motion.div variants={itemVariants} className="flex items-center space-x-4">
@@ -173,18 +202,35 @@ const Navbar = () => {
                   }
                 }}
               >                {navLinks.map((link) => (
-                  <motion.a
+                  <motion.div
                     key={link.name}
-                    href={link.href}
-                    className="nav-link text-base font-medium py-2 border-b border-gray-100 dark:border-gray-700/30 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
-                    onClick={() => setIsOpen(false)}
                     variants={{
                       hidden: { opacity: 0, x: -20 },
                       visible: { opacity: 1, x: 0 }
                     }}
                   >
-                    {link.name}
-                  </motion.a>
+                    <Link
+                      href={link.href}
+                      className={`nav-link text-base font-medium py-3 border-b border-gray-100 dark:border-gray-700/30 transition-colors block relative ${
+                        isActiveLink(link.href) 
+                          ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' 
+                          : 'text-gray-700 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-dark-200/50'
+                      }`}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span>{link.name}</span>
+                        {isActiveLink(link.href) && (
+                          <motion.div
+                            className="w-2 h-2 bg-primary-500 rounded-full"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        )}
+                      </div>
+                    </Link>
+                  </motion.div>
                 ))}
               </motion.div>
             </motion.div>
