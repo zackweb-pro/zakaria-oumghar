@@ -9,11 +9,26 @@
       "dest": "/api/visitors.json"
     },
     {
+      "src": "/about",
+      "dest": "/about/index.html"
+    },
+    {
+      "src": "/skills", 
+      "dest": "/skills/index.html"
+    },
+    {
+      "src": "/projects",
+      "dest": "/projects/index.html"
+    },
+    {
+      "src": "/contact",
+      "dest": "/contact/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
   ],
-  "functions": {},
   "headers": [
     {
       "source": "/assets/(.*)",
