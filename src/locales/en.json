@@ -43,6 +43,19 @@
     "interestsList": ["UI/UX", "Backend engineering", "DevOps", "Web Development", "Mobile Apps", "AI & Machine Learning", "Open Source Contributions", "Playing Video Games", "Playing Chess"],
     "experienceList": [
       {
+        "company": "Univers Gharb de la Prestation (UGP), Rabat",
+        "position": "Full-Stack Software Engineering Intern",
+        "type": "Hybrid",
+        "period": "June - August 2025",
+        "location": "Rabat, Morocco",
+        "achievements": [
+          "Design and development of a multi-role web platform for industrial surface treatment services management with secure authentication and real-time order tracking.",
+          "Development of a Spring Boot microservices backend and a React + TypeScript frontend with analytical dashboards, notifications, and a modern glassmorphism interface.",
+          "Containerization and deployment on Oracle Cloud using Docker and automated CI/CD workflows."
+        ],
+        "technologies": ["Java", "Spring Boot", "React.js", "TypeScript", "PostgreSQL", "Docker", "OCI", "Bash"]
+      },
+      {
         "company": "Somap & Services",
         "position": "Software Engineering Intern",
         "type": "Hybrid",

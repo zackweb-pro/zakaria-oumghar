@@ -31,6 +31,16 @@ const ProjectsSection = () => {  const { t } = useTranslation();
 
   const projects = [
     {
+      title: 'OurBusWay — Urban Transportation Digitalization Platform',
+      description: 'Comprehensive urban transportation management platform enabling ticket purchase, subscription management, real-time bus tracking, incident management and multi-user dashboards.',
+      image: '/assets/ourbusway.png',
+      tags: ['Spring Boot', 'Spring Cloud', 'PostgreSQL', 'RabbitMQ', 'React', 'TypeScript', 'Stripe API', 'Consul', 'Docker', 'JWT'],
+      github: '#',
+      demo: '#',
+      color: 'from-sky-500/20 to-blue-400/20',
+      accent: '#A54033'
+    },
+    {
       title: 'Management of department in ENSIAS',
       description: 'A web application for managing the departments of ENSIAS and displaying them in a more esthitique astonishing way.',
       image: '/assets/dep_manage.png',

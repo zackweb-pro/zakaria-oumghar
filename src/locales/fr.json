@@ -44,6 +44,19 @@
     "interestsList": ["UI/UX", "Ingénierie backend", "DevOps", "Dévelopment web", "Les applications mobile", "AI & Machine Learning", "Contributions Open Source", "jouer aux jeux vidéo", "jouer au échecs"],
     "experienceList": [
       {
+        "company": "Univers Gharb de la Prestation (UGP), Rabat",
+        "position": "Stagiaire en Ingénierie Logicielle Full-Stack",
+        "type": "Hybride",
+        "period": "Juin - Août 2025",
+        "location": "Rabat, Maroc",
+        "achievements": [
+          "Conception et développement d'une plateforme web multi-rôles pour la gestion des services de traitement de surface industrielle avec authentification sécurisée et suivi des commandes en temps réel.",
+          "Développement d'un backend microservices avec Spring Boot et d'un frontend React + TypeScript avec tableaux analytiques, notifications et interface moderne en glassmorphism.",
+          "Containerisation et déploiement sur Oracle Cloud avec Docker et workflows CI/CD automatisés."
+        ],
+        "technologies": ["Java", "Spring Boot", "React.js", "TypeScript", "PostgreSQL", "Docker", "OCI", "Bash"]
+      },
+      {
         "company": "Somap & Services",
         "position": "Stage en Ingénierie Logicielle",
         "type": "Hybride",
