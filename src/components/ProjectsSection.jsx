@@ -10,6 +10,7 @@ const ProjectsSection = () => {  const { t } = useTranslation();
   const ref = useRef(null);
   const isInView = useThrottledInView(ref, { once: false });
   const [activeIndex, setActiveIndex] = useState(null);
+  const [expanded, setExpanded] = useState({});
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -32,10 +33,10 @@ const ProjectsSection = () => {  const { t } = useTranslation();
   const projects = [
     {
       title: 'OurBusWay — Urban Transportation Digitalization Platform',
-      description: 'Comprehensive urban transportation management platform enabling ticket purchase, subscription management, real-time bus tracking, incident management and multi-user dashboards.',
+      description: `Comprehensive urban transportation management platform enabling ticket purchase, subscription management, real-time bus tracking, incident management and multi-user dashboards. Secure Stripe payment integration with asynchronous transaction processing and automatic passenger notifications. Multi-user interfaces with dashboards for passengers, drivers, controllers and administrators. Spring Boot/Cloud microservices architecture with event-driven communication (RabbitMQ) and PostgreSQL.`,
       image: '/assets/ourbusway.png',
       tags: ['Spring Boot', 'Spring Cloud', 'PostgreSQL', 'RabbitMQ', 'React', 'TypeScript', 'Stripe API', 'Consul', 'Docker', 'JWT'],
-      github: '#',
+      github: 'https://github.com/orgs/AhssenQuadrinome/dashboard',
       demo: '#',
       color: 'from-sky-500/20 to-blue-400/20',
       accent: '#A54033'
@@ -254,9 +255,18 @@ const ProjectsSection = () => {  const { t } = useTranslation();
                   </div>
                   
                   {/* Description */}
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                  <p className={"text-gray-600 dark:text-gray-300 text-sm mb-1 " + (expanded[index] ? '' : 'line-clamp-3')}>
                     {project.description}
                   </p>
+                  {/* See more / toggle */}
+                  {project.description && project.description.length > 180 && (
+                    <button
+                      onClick={() => setExpanded((s) => ({ ...s, [index]: !s[index] }))}
+                      className="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline"
+                    >
+                      {expanded[index] ? 'See less' : 'See more'}
+                    </button>
+                  )}
                   
                   {/* Enhanced Tags Section with Advanced Effects */}
                   <div className="mb-5 relative">
